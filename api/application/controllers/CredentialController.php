@@ -13,11 +13,6 @@ class CredentialController extends API_Controller{
 	}
 
 
-
-//samplesl̥
-	//rsjkfkjdgkjdjkgskj
-
-
 	public function index()
 	{
 		$this->load->view('demo');
