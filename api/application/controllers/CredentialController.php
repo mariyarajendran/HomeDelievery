@@ -17,6 +17,8 @@ class CredentialController extends API_Controller{
 	{
 		$this->load->view('demo');
 		$this->load->library('database');
+		$this->load->library('Authorization_Token');
+		
 	}
 	
 	
@@ -72,10 +74,19 @@ public function signup(){
 
 	$user_id = $data['user_id'];
 	$user_name = $data['user_username'];
-	$email_id = $data['user_emailid'];
+	$email_id = $data['user_emailid'];    //optional
 	$mobile_number = $data['user_mobile_number'];
-	$user_lat = $data['user_lat'];
-	$user_lng = $data['user_lng'];
+	//$user_lat = $data['user_lat'];  //no need remove
+	//$user_lng = $data['user_lng'];  //no need remove
+	$user_address=$data['user_address'];
+	$user_street=$data['user_street'];
+	$user_city=$data['user_city'];
+	$user_country=$data['user_country'];
+
+	//add address -- *
+	//add street -- *
+	//add city -- *
+	//add country -- *
 
 
 	if(empty($user_id)){
@@ -99,49 +110,65 @@ public function signup(){
 		->set_content_type('application/json')
 		->set_output(json_encode($response_array));
 	}
-	else if(empty($email_id)){
+	else if(empty($user_address)){
 		$response_array=array(
 			'status_code'=>"0",
 			'status'=>"fails",
-			'message'=>"Enter EmailID",
+			'message'=>"Enter Address",
 		);
 		$this->output
 		->set_content_type('application/json')
 		->set_output(json_encode($response_array));
 	}
-	else if(empty($user_lat)){
+	else if(empty($user_street)){
 		$response_array=array(
 			'status_code'=>"0",
 			'status'=>"fails",
-			'message'=>"User current location needed",
+			'message'=>"Enter Street",
 		);
 		$this->output
 		->set_content_type('application/json')
 		->set_output(json_encode($response_array));
 	}
-	else if(empty($user_lng)){
+	else if(empty($user_city)){
 		$response_array=array(
 			'status_code'=>"0",
 			'status'=>"fails",
-			'message'=>"User current location needed",
+			'message'=>"Enter City",
 		);
 		$this->output
 		->set_content_type('application/json')
 		->set_output(json_encode($response_array));
 	}
+	else if(empty($user_country)){
+		$response_array=array(
+			'status_code'=>"0",
+			'status'=>"fails",
+			'message'=>"Enter Country",
+		);
+		$this->output
+		->set_content_type('application/json')
+		->set_output(json_encode($response_array));
+	}
+
 	else{
 
 		$signup_array=array('user_username'=>$user_name,
 			'user_emailid'=>$email_id,
 			'user_mobilenumber'=>$mobile_number,
-			'user_lat'=>$user_lat,
-			'user_lng'=>$user_lng,
+			//'user_lat'=>"",
+			//'user_lng'=>"",
 			'user_register_status'=>"1",
+			'user_address'=>$user_address,
+			'user_street'=>$user_street,
+			'user_city'=>$user_city,
+			'user_country'=>$user_country,
 		);
 
 		$result_query=$this->CredentialModel->updateUserDatas($user_id,$signup_array);
 		if($result_query)
 		{
+
 			$response_array=array(
 				'status_code'=>"1",
 				'status'=>true,
@@ -151,8 +178,12 @@ public function signup(){
 					'user_name'=>$user_name,
 					'user_mailid'=>$email_id,
 					'user_mobile_number'=>$mobile_number,
-					'user_current_lat'=>$user_lat,
-					'user_current_lng'=>$user_lng,
+					//'user_current_lat'=>$user_lat,
+					//'user_current_lng'=>$user_lng,
+					'user_address'=>$user_address,
+					'user_street'=>$user_street,
+					'user_city'=>$user_city,
+					'user_country'=>$user_country,
 				),
 
 			);
@@ -187,6 +218,11 @@ public function login(){
 	$json_request_body = file_get_contents('php://input');
 	$data = json_decode($json_request_body, true);
 	$mobilenumber = $data['user_mobilenumber'];
+	$payload = [
+		'token_generation' => "Token Generated",
+	];
+	$this->load->library('Authorization_Token');
+	$token = $this->authorization_token->generateToken($payload);
 
 
 		//$password=$this->input->post('password');
@@ -204,7 +240,14 @@ public function login(){
 		$check_duplicate_array=array('user_mobilenumber'=>$mobilenumber);
 		$query_result_duplicate=$this->CredentialModel->checkduplicate_mobilenumber(
 			$check_duplicate_array); 
-		$randomOTP = substr(str_shuffle("0123456789"), 0, 5);  
+		$randomOTP = substr(str_shuffle("0123456789"), 0, 4);  
+
+		// $payload = [
+		// 	'id' => "Your User's ID",
+		// 	'other' => "Some other data"
+		// ];
+
+		// $token = $this->authorization_token->generateToken($payload);
 
 
 ///This functionality is for new registration users
@@ -219,6 +262,7 @@ public function login(){
 				'user_register_status'=>"0",
 				'user_firebasekey'=>"",
 				'user_deviceimeno'=>"",
+				'user_access_token'=>$token
 			);
 
 			$result_query=$this->CredentialModel->signupmodel($signup_array);
@@ -233,6 +277,7 @@ public function login(){
 						'user_register_status'=>"0",
 						'user_mobile_number'=>$mobilenumber,
 						'user_otp'=>$randomOTP,
+						'user_access_token'=>$token
 					),
 
 				);
@@ -259,8 +304,15 @@ public function login(){
 
 			$userId=$queryResultUserDetails[0]['user_id'];
 			$userRegistrationStatus=$queryResultUserDetails[0]['user_register_status'];
+			$userAccessToken=$queryResultUserDetails[0]['user_access_token'];
 
-			$data=array('user_otp'=>$randomOTP);
+			$payload = [
+				'token_generation' => "Token Generated",
+			];
+			$this->load->library('Authorization_Token');
+			$token = $this->authorization_token->generateToken($payload);
+
+			$data=array('user_otp'=>$randomOTP,'user_access_token'=>$token);
 			$this->CredentialModel->updateOTP($userId,$data);
 
 
@@ -274,6 +326,7 @@ public function login(){
 					'user_register_status'=>$userRegistrationStatus,
 					'user_mobile_number'=>$mobilenumber,
 					'user_otp'=>$randomOTP,
+					'user_access_token'=>$token
 				),
 			);
 			$this->output
@@ -338,16 +391,17 @@ public function demoapilogin()
         // API Configuration
 	$this->_apiConfig([
 		'methods' => ['POST'],
-		'requireAuthorization'=> true,
+		'requireAuthorization'=> false,
 	]);
-        // you user authentication code will go here, you can compare the user with the database or whatever
+
 	$payload = [
 		'id' => "Your User's ID",
 		'other' => "Some other data"
+
 	];
-        // Load Authorization Library or Load in autoload config file
+
 	$this->load->library('Authorization_Token');
-        // generate a token
+
 	$token = $this->authorization_token->generateToken($payload);
         // return data
 	$this->api_return(
