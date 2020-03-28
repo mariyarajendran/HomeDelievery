@@ -9,8 +9,6 @@ class CredentialController extends CI_Controller{
 	{
 		$this->load->view('demo');
 	}
-
-
 	public function signup(){
 		$this->load->model('CredentialModel');
 		$response_array =array();	
@@ -142,21 +140,21 @@ class CredentialController extends CI_Controller{
 						'user_mobile_number'=>$query[0]['user_mobilenumber']),
 
 				);
-			echo json_encode($response_array);
+				echo json_encode($response_array);
+			}
+			else{
+				$response_array=array(
+					'status_code'=>"0",
+					'status'=>"fails",
+					'message'=>"Login Fails",
+				);
+				echo json_encode($response_array);
+			}
 		}
-		else{
-			$response_array=array(
-				'status_code'=>"0",
-				'status'=>"fails",
-				'message'=>"Login Fails",
-			);
-			echo json_encode($response_array);
-		}
+
+
+
 	}
-
-
-
-}
 
 
 }
