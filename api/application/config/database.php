@@ -76,9 +76,9 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'eecshopp_tomato',  //eecshopp_tomato
-	'password' => 'jh@WtmL9P,x=',    //jh@WtmL9P,x=
-	'database' => 'eecshopp_tomato', //eecshopp_tomato
+	'username' => 'root',  //eecshopp_tomato
+	'password' => '',    //jh@WtmL9P,x=
+	'database' => 'justsitandorder', //eecshopp_tomato
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
