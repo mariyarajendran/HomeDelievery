@@ -53,7 +53,7 @@ $route['default_controller'] = 'welcome';
 $route['demo'] = 'DemoController';
 ///credential Area
 $route['json/userLogin'] = 'CredentialController/userLogin';
-$route['json/usersignup'] = 'CredentialController/userSignup';
+$route['json/userSignup'] = 'CredentialController/userSignup';
 ///credential Area
 
 ///profile Area
