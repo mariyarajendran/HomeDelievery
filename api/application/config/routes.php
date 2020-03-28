@@ -51,7 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'welcome';
 $route['demo'] = 'DemoController';
-$route['json/signup'] = 'CredentialController/signup';
+$route['json/login'] = 'CredentialController/login';
 $route['json/usersignup'] = 'CredentialController/userSignup';
 $route['json/demoapi'] = 'CredentialController/demoapi';
 $route['json/demoapilogin'] = 'CredentialController/demoapilogin';
