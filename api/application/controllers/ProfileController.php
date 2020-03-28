@@ -49,7 +49,8 @@ class ProfileController extends API_Controller{
             'user_name' => $result_query[0]['user_username'],
             'user_mailid' => $result_query[0]['user_emailid'],
             'user_mobile_number' => $result_query[0]['user_mobilenumber'],
-            'user_address' => $result_query[0]['user_address'])
+            'user_address' => $result_query[0]['user_address'],
+            'user_profile_img' => $result_query[0]['user_profile_img'])
         );
         $this->output
         ->set_content_type('application/json')
@@ -81,6 +82,7 @@ class ProfileController extends API_Controller{
    $user_mailid = $data['user_mailid'];
    $user_mobile_number = $data['user_mobile_number'];
    $user_address = $data['user_address'];
+   $user_profile_img = $data['user_profile_img'];
 
    if(empty($user_id)){
     $response_array = array(
@@ -98,6 +100,7 @@ class ProfileController extends API_Controller{
     $db_user_mailid = $result_query[0]['user_emailid'];
     $db_user_mobile_number = $result_query[0]['user_mobilenumber'];
     $db_user_address = $result_query[0]['user_address'];
+    $db_user_profile_img = $result_query[0]['user_profile_img'];
 
     if(empty($user_name)){
       $user_name = $db_user_name;
@@ -108,11 +111,15 @@ class ProfileController extends API_Controller{
     } if(empty($user_address)){
       $user_address=$db_user_address;
     }
+    if(empty($user_profile_img)){
+      $user_profile_img=$db_user_profile_img;
+    }
     $user_data = array(
       'user_username' => $user_name,
       'user_emailid' => $user_mailid,
       'user_mobilenumber' => $user_mobile_number,
       'user_address' => $user_address,
+      'user_profile_img' => $user_profile_img
     );
     $result_query = $this->ProfileModel->updateUserDatas($user_id,$user_data);
     if($result_query)
