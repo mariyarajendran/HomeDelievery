@@ -54,97 +54,116 @@ class CredentialController extends API_Controller{
 
     $json_request_body = file_get_contents('php://input');
     $data = json_decode($json_request_body, true);
-    $mobile_number = $data['user_mobile_number'];
-    $user_password = $data['user_password'];
 
-    $payload = [
-      'token_generation' => "Token Generated",
-    ];
-    $this->load->library('Authorization_Token');
-    $token = $this->authorization_token->generateToken($payload);
+    if(isset($data['user_mobile_number']) && isset($data['user_password'])){
+      $mobile_number = $data['user_mobile_number'];
+      $user_password = $data['user_password'];
 
+      $payload = [
+        'token_generation' => "Token Generated",
+      ];
+      $this->load->library('Authorization_Token');
+      $token = $this->authorization_token->generateToken($payload);
 
-    if(empty($mobile_number)){
-      $response_array = array(
-       'status_code' => "0",
-       'status' => "fails",
-       'message' => "Enter Mobile Number",
-     );
-      $this->output
-      ->set_content_type('application/json')
-      ->set_output(json_encode($response_array));
-    }
-    else if(empty($user_password)){
-      $response_array = array(
-        'status_code' => "0",
-        'status' => "fails",
-        'message' => "Enter Password",
-      );
-      $this->output
-      ->set_content_type('application/json')
-      ->set_output(json_encode($response_array));
-    }
-    else{
-      $check_duplicate_array = array('user_mobilenumber' => $mobile_number);
-      $query_result_duplicate = $this->CredentialModel->checkduplicate_mobilenumber($check_duplicate_array);
-
-      if($query_result_duplicate != 0){
-        $login_array = array(
-         'user_mobilenumber' => $mobile_number,
-         'user_password' => $user_password,
+      if(empty($mobile_number)){
+        $response_array = array(
+         'status_code' => "0",
+         'status' => "fails",
+         'message' => "Enter Mobile Number",
        );
-        $result_query = $this->CredentialModel->checklogin($login_array);
-        if($result_query)
-        {
-          $user_id=$result_query[0]['user_id'];
-          $updateUserToken = array('user_access_token' => $token);
-          $this->CredentialModel->updateUserDatas($user_id,$updateUserToken);
-
-          $response_array = array(
-            'status_code' => "1",
-            'status' => true,
-            'message' => "Login Successfully",
-            'user_details' => array('user_id' => $result_query[0]['user_id'],
-              'user_name' => $result_query[0]['user_username'],
-              'user_mailid' => $result_query[0]['user_emailid'],
-              'user_mobile_number' => $result_query[0]['user_mobilenumber'],
-              'user_access_token' => $token),
-
-
-          );
-          $this->output
-          ->set_content_type('application/json')
-          ->set_output(json_encode($response_array));
-        }
-        else{
-          $response_array = array(
-            'status_code' => "0",
-            'status' => false,
-            'message' => "Something Wrong in Registartion",
-          );
-          $this->output
-          ->set_content_type('application/json')
-          ->set_output(json_encode($response_array));
-        }
+        $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($response_array));
       }
-      else{
+      else if(empty($user_password)){
         $response_array = array(
           'status_code' => "0",
-          'status' => false,
-          'message' => "Account not exist. please signup first",
-          'user_details' => array(
-           'user_id' => "",
-           'user_register_status' => "",
-           'user_mobile_number' => "",
-           'user_otp' => "",
-           'user_access_token' => ""
-         ),
+          'status' => "fails",
+          'message' => "Enter Password",
         );
         $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode($response_array));
       }
+      else{
+        $check_duplicate_array = array('user_mobilenumber' => $mobile_number);
+        $query_result_duplicate = $this->CredentialModel->checkduplicate_mobilenumber($check_duplicate_array);
 
+        if($query_result_duplicate != 0){
+          $login_array = array(
+           'user_mobilenumber' => $mobile_number,
+           'user_password' => $user_password,
+         );
+          $result_query = $this->CredentialModel->checklogin($login_array);
+          if($result_query)
+          {
+            $user_id=$result_query[0]['user_id'];
+            $updateUserToken = array('user_access_token' => $token);
+            $this->CredentialModel->updateUserDatas($user_id,$updateUserToken);
+
+            $response_array = array(
+              'status_code' => "1",
+              'status' => true,
+              'message' => "Login Successfully",
+              'user_details' => array('user_id' => $result_query[0]['user_id'],
+                'user_name' => $result_query[0]['user_username'],
+                'user_mailid' => $result_query[0]['user_emailid'],
+                'user_mobile_number' => $result_query[0]['user_mobilenumber'],
+                'user_access_token' => $token),
+
+
+            );
+            $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response_array));
+          }
+          else{
+            $response_array = array(
+              'status_code' => "0",
+              'status' => false,
+              'message' => "Something Wrong in Registartion",
+            );
+            $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($response_array));
+          }
+        }
+        else{
+          $response_array = array(
+            'status_code' => "0",
+            'status' => false,
+            'message' => "Account not exist. please signup first",
+            'user_details' => array(
+             'user_id' => "",
+             'user_register_status' => "",
+             'user_mobile_number' => "",
+             'user_otp' => "",
+             'user_access_token' => ""
+           ),
+          );
+          $this->output
+          ->set_content_type('application/json')
+          ->set_output(json_encode($response_array));
+        }
+
+      }
+    }
+    else{
+      $response_array = array(
+        'status_code' => "0",
+        'status' => false,
+        'message' => "Please give all request params",
+        'user_details' => array(
+         'user_id' => "",
+         'user_register_status' => "",
+         'user_mobile_number' => "",
+         'user_otp' => "",
+         'user_access_token' => ""
+       ),
+      );
+      $this->output
+      ->set_content_type('application/json')
+      ->set_output(json_encode($response_array));
     }
 
   }
