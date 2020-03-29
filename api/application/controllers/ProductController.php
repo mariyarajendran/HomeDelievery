@@ -23,7 +23,6 @@ class ProductController extends API_Controller{
 
 	public function getAllProducts(){
 		$this->load->model('ProductModel');
-
 		$json_request_body = file_get_contents('php://input');
 		$data = json_decode($json_request_body, true);
 
@@ -76,14 +75,7 @@ class ProductController extends API_Controller{
 			$response_array = array(
 				'status_code' => "0",
 				'status' => false,
-				'message' => "Please give all request params",
-				'user_details' => array(
-					'user_id' => "",
-					'user_register_status' => "",
-					'user_mobile_number' => "",
-					'user_otp' => "",
-					'user_access_token' => ""
-				),
+				'message' => "Please give all request params"
 			);
 			$this->output
 			->set_content_type('application/json')
