@@ -23,7 +23,6 @@ class ProductController extends API_Controller{
 
 	public function getAllProducts(){
 		$this->load->model('ProductModel');
-
 		$json_request_body = file_get_contents('php://input');
 		$data = json_decode($json_request_body, true);
 

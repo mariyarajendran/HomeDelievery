@@ -65,6 +65,11 @@ $route['json/updateUserDetails'] = 'ProfileController/updateAllUserProfileDetail
 $route['json/getAllProducts'] = 'ProductController/getAllProducts';
 //product Area
 
+//cart Area
+$route['json/addToCart'] = 'CartController/insertCart';
+$route['json/deleteToCart'] = 'CartController/deleteCart';
+$route['json/getAllCartDatas'] = 'CartController/getAllCartDetails';
+//cart Area
 
 $route['json/demoapi'] = 'CredentialController/demoapi';
 $route['json/demoapilogin'] = 'CredentialController/demoapilogin';
