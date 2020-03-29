@@ -78,6 +78,13 @@ $route['json/cancelOrder'] = 'OrderController/cancelOrder';
 $route['json/orderHistory'] = 'OrderController/orderHistoryDetails';
 //order Area
 
+//admin add product
+$route['json/addNewProduct'] = 'AdminAddProductController/adminAddProductDatas';
+$route['json/updateProduct'] = 'AdminAddProductController/updateProductDetails';
+$route['json/deleteproduct'] = 'AdminAddProductController/adminDeleteProduct';
+$route['json/adminUpdateProductStatus'] = 'AdminAddProductController/confirmAndCloseOrder';
+//admin add product
+
 $route['json/demoapi'] = 'CredentialController/demoapi';
 $route['json/demoapilogin'] = 'CredentialController/demoapilogin';
 $route['json/demoapiview'] = 'CredentialController/demoapiview';

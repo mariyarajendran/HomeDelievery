@@ -178,7 +178,8 @@ public function userLogin(){
               'user_name' => $result_query[0]['user_username'],
               'user_mailid' => $result_query[0]['user_emailid'],
               'user_mobile_number' => $result_query[0]['user_mobilenumber'],
-              'user_access_token' => $token),
+              'user_access_token' => $token,
+              'role_id' => $result_query[0]['role_id']),
 
 
           );
@@ -239,7 +240,6 @@ public function userLogin(){
 
 
 public function userSignup(){
-
  $this->load->model('CredentialModel');
  $json_request_body = file_get_contents('php://input');
  $data = json_decode($json_request_body, true);
@@ -312,7 +312,8 @@ public function userSignup(){
             'user_firebasekey' => "",
             'user_deviceimeno' => "",
             'user_access_token' => $token,
-            'user_status' => "Active"
+            'user_status' => "Active",
+            'role_id' => "0"
           );
 
           $result_query = $this->CredentialModel->signupmodel($signup_array);

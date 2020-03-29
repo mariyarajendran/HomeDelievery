@@ -40,6 +40,16 @@ class CartModel extends CI_Model{
 		return $query_result->result_array();
 	} 
 
+	public function getAllCartByDate($data,$from_date,$to_date){
+		$this->db->select('*');
+		$this->db->from('cart_master');
+		$this->db->join('product_master','cart_master.product_id=product_master.product_id');
+		$this->db->where('cart_master.cart_date >=', $from_date);
+		$this->db->where('cart_master.cart_date <=', $to_date);
+		$this->db->where('cart_master.user_id',$data);
+		$query_result=$this->db->get();
+		return $query_result->result_array();
+	} 
 
 
 

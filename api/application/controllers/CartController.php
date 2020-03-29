@@ -174,9 +174,16 @@ class CartController extends API_Controller{
 		$json_request_body = file_get_contents('php://input');
 		$data = json_decode($json_request_body, true);
 
-		if(isset($data['user_id'])){
+		if(isset($data['user_id']) && isset($data['from_date']) && isset($data['to_date'])){
 			$user_id = $data['user_id'];
-			$result_query = $this->CartModel->getAllCartDatas($user_id);
+			$from_date = $data['from_date'];
+			$to_date = $data['to_date'];
+
+			if(empty($from_date) && empty($to_date)){
+				$result_query = $this->CartModel->getAllCartDatas($user_id);
+			}else{
+				$result_query = $this->CartModel->getAllCartByDate($user_id,$from_date,$to_date);
+			}
 			//print_r($result_query);
 			$resultSet = Array();
 			if($result_query)
