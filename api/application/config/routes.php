@@ -51,8 +51,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'welcome';
 $route['demo'] = 'DemoController';
-$route['json/signup'] = 'CredentialController/signup';
-$route['json/usersignup'] = 'CredentialController/userSignup';
+///credential Area
+$route['json/userLogin'] = 'CredentialController/userLogin';
+$route['json/userSignup'] = 'CredentialController/userSignup';
+///credential Area
+
+///profile Area
+$route['json/getAllUserDetails'] = 'ProfileController/getAllUserDetails';
+$route['json/updateUserDetails'] = 'ProfileController/updateAllUserProfileDetails';
+///profile Area
+
+//product Area
+$route['json/getAllProducts'] = 'ProductController/getAllProducts';
+//product Area
+
+
 $route['json/demoapi'] = 'CredentialController/demoapi';
 $route['json/demoapilogin'] = 'CredentialController/demoapilogin';
 $route['json/demoapiview'] = 'CredentialController/demoapiview';
