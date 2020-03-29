@@ -54,6 +54,7 @@ $route['demo'] = 'DemoController';
 ///credential Area
 $route['json/userLogin'] = 'CredentialController/userLogin';
 $route['json/userSignup'] = 'CredentialController/userSignup';
+$route['json/logout'] = 'CredentialController/logout';
 ///credential Area
 
 ///profile Area
@@ -70,6 +71,12 @@ $route['json/addToCart'] = 'CartController/insertCart';
 $route['json/deleteToCart'] = 'CartController/deleteCart';
 $route['json/getAllCartDatas'] = 'CartController/getAllCartDetails';
 //cart Area
+
+//order Area
+$route['json/placeOrder'] = 'OrderController/placeOrder';
+$route['json/cancelOrder'] = 'OrderController/cancelOrder';
+$route['json/orderHistory'] = 'OrderController/orderHistoryDetails';
+//order Area
 
 $route['json/demoapi'] = 'CredentialController/demoapi';
 $route['json/demoapilogin'] = 'CredentialController/demoapilogin';
