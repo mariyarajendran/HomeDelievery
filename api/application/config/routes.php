@@ -60,6 +60,12 @@ $route['json/userSignup'] = 'CredentialController/userSignup';
 $route['json/getAllUserDetails'] = 'ProfileController/getAllUserDetails';
 $route['json/updateUserDetails'] = 'ProfileController/updateAllUserProfileDetails';
 ///profile Area
+
+//product Area
+$route['json/getAllProducts'] = 'ProductController/getAllProducts';
+//product Area
+
+
 $route['json/demoapi'] = 'CredentialController/demoapi';
 $route['json/demoapilogin'] = 'CredentialController/demoapilogin';
 $route['json/demoapiview'] = 'CredentialController/demoapiview';
