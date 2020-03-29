@@ -39,7 +39,7 @@ class OrderModel extends CI_Model{
 		}else{
 			return false;
 		}
-	}
+	}	
 
 
 
@@ -52,6 +52,16 @@ class OrderModel extends CI_Model{
 		return $query_result->result_array();
 	} 
 
+	public function getAllOrderByDate($data,$from_date,$to_date){
+		$this->db->select('*');
+		$this->db->from('order_master');
+		$this->db->join('product_master','order_master.product_id=product_master.product_id');
+		$this->db->where('order_master.order_date >=', $from_date);
+		$this->db->where('order_master.order_date <=', $to_date);
+		$this->db->where('order_master.user_id',$data);
+		$query_result=$this->db->get();
+		return $query_result->result_array();
+	} 
 
 
 
