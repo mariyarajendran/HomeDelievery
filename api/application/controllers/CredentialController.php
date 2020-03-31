@@ -57,6 +57,7 @@ class CredentialController extends API_Controller{
 
   public function logout(){
     $this->load->model('CredentialModel');
+    
 
     $json_request_body = file_get_contents('php://input');
     $data = json_decode($json_request_body, true);

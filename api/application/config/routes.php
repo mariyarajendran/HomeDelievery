@@ -85,6 +85,10 @@ $route['json/deleteproduct'] = 'AdminAddProductController/adminDeleteProduct';
 $route['json/adminUpdateProductStatus'] = 'AdminAddProductController/confirmAndCloseOrder';
 //admin add product
 
+//pushNotification Area
+$route['json/pushNotification'] = 'PushNotificationController/pushNotification';
+//pushNotification Area
+
 $route['json/demoapi'] = 'CredentialController/demoapi';
 $route['json/demoapilogin'] = 'CredentialController/demoapilogin';
 $route['json/demoapiview'] = 'CredentialController/demoapiview';
