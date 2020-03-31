@@ -10,6 +10,14 @@ class OrderController extends API_Controller{
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
+
+		
+		$this->_APIConfig([
+			'methods'                              => ['POST','GET'],
+			'requireAuthorization'                 => true,
+			'limit' => [100, 'ip', 'everyday'] ,
+			'data' => [ 'status_code' => '404' ],
+		]);
 	}
 
 
