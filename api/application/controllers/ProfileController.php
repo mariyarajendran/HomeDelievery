@@ -10,6 +10,13 @@ class ProfileController extends API_Controller{
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
+
+    $this->_APIConfig([
+      'methods'                              => ['POST','GET'],
+      'requireAuthorization'                 => true,
+      'limit' => [100, 'ip', 'everyday'] ,
+      'data' => [ 'status_code' => '404' ],
+    ]);
 	}
 
 
@@ -17,11 +24,14 @@ class ProfileController extends API_Controller{
 	{
 		$this->load->view('demo');
 		$this->load->library('database');
-	}
+  }
+
 
 
 
   public function getAllUserDetails(){
+    header("Access-Control-Allow-Origin: *");
+
     $this->load->model('ProfileModel');
     $json_request_body = file_get_contents('php://input');
     $data = json_decode($json_request_body, true);
@@ -55,6 +65,8 @@ class ProfileController extends API_Controller{
         $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode($response_array));
+
+        //$this->api_return(data, status_code);
       }
       else{
         $response_array = array(
@@ -69,7 +81,7 @@ class ProfileController extends API_Controller{
 
 
     }
-    
+
   }
 
 
@@ -143,7 +155,7 @@ class ProfileController extends API_Controller{
       ->set_content_type('application/json')
       ->set_output(json_encode($response_array));
     }
-    
+
 
   }
 

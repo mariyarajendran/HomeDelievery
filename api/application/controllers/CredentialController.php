@@ -10,6 +10,14 @@ class CredentialController extends API_Controller{
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
+
+    
+    $this->_APIConfig([
+      'methods'                              => ['POST','GET'],
+      'requireAuthorization'                 => true,
+      'limit' => [100, 'ip', 'everyday'] ,
+      'data' => [ 'status_code' => '404' ],
+    ]);
 	}
 
 
@@ -423,11 +431,12 @@ public function userSignup(){
      $this->_apiConfig([
       'methods'                                  => ['POST'],
       'requireAuthorization'                     => false,
+      //'limit' => [5, 'ip', 5],
     ]);
 
      $payload                                     = [
-      'id'                                       => "Your User's ID",
-      'other'                                    => "Some other data"
+      'id'                                       => "87878",
+      'other'                                    => "kjdfkdkdv"
 
     ];
 
