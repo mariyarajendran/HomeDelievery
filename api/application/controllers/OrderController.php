@@ -196,60 +196,74 @@ class OrderController extends API_Controller{
 		$json_request_body = file_get_contents('php://input');
 		$data = json_decode($json_request_body, true);
 
-		if(isset($data['user_id']) && isset($data['from_date']) && isset($data['to_date'])){
+		if(isset($data['user_id']) && isset($data['from_date']) && isset($data['to_date']) && isset($data['page_count'])){
 			$user_id = $data['user_id'];
 			$from_date = $data['from_date'];
 			$to_date = $data['to_date'];
+			$page_count = $data['page_count'];
 
-			if(empty($from_date) && empty($to_date)){
-				$result_query = $this->OrderModel->getAllOrderDatas($user_id);
-			}else{
-				$result_query = $this->OrderModel->getAllOrderByDate($user_id,$from_date,$to_date);
-			}
-		//print_r($to_date);
-			$resultSet = Array();
-			if($result_query)
-			{
-				foreach ($result_query as $product_result) 
-				{ 
-					$resultSet[] = array(
-						"product_id" =>  $product_result['product_id'],
-						"user_id" =>  $product_result['user_id'],
-						"order_id" =>  $product_result['order_id'],
-						"product_name" =>  $product_result['product_name'],
-						"product_cost" =>  $product_result['product_cost'],
-						"product_image" =>  $product_result['product_image'],
-						"product_short_descr" =>  $product_result['product_short_descr'],
-						"product_long_descr" =>  $product_result['product_long_descr'],
-						"product_offers" =>  $product_result['product_offers'],
-						"order_date" =>  $product_result['order_date'],
-						"order_status" =>  $product_result['order_status'],
-					);
-				} 
-
-				$response_array = array(
-					'status_code' => "1",
-					'status' => true,
-					'message' => "Order History Received Successfully",
-					'product_details' => $resultSet
-				);
-				$this->output
-				->set_content_type('application/json')
-				->set_output(json_encode($response_array));
-			}
-			else{
+			if($page_count==''){
 				$response_array = array(
 					'status_code' => "0",
-					'status' => false,
-					'message' => "Order History result not found.",
-					'product_details' => $resultSet
+					'status' => "fails",
+					'message' => "Page Count must be not empty",
 				);
 				$this->output
 				->set_content_type('application/json')
 				->set_output(json_encode($response_array));
+			}else{
+				$page_count = ($page_count * 10);
+				if(empty($from_date) && empty($to_date)){
+					$result_query = $this->OrderModel->getAllOrderDatas($user_id,$page_count);
+				}else{
+					$result_query = $this->OrderModel->getAllOrderByDate($user_id,$from_date,$to_date,$page_count);
+				}
+
+		//print_r($to_date);
+				$resultSet = Array();
+				if($result_query)
+				{
+					foreach ($result_query as $product_result) 
+					{ 
+						$resultSet[] = array(
+							"product_id" =>  $product_result['product_id'],
+							"user_id" =>  $product_result['user_id'],
+							"order_id" =>  $product_result['order_id'],
+							"product_name" =>  $product_result['product_name'],
+							"product_cost" =>  $product_result['product_cost'],
+							"product_image" =>  $product_result['product_image'],
+							"product_short_descr" =>  $product_result['product_short_descr'],
+							"product_long_descr" =>  $product_result['product_long_descr'],
+							"product_offers" =>  $product_result['product_offers'],
+							"order_date" =>  $product_result['order_date'],
+							"order_status" =>  $product_result['order_status'],
+						);
+					} 
+
+					$response_array = array(
+						'status_code' => "1",
+						'status' => true,
+						'message' => "Order History Received Successfully",
+						'product_details' => $resultSet
+					);
+					$this->output
+					->set_content_type('application/json')
+					->set_output(json_encode($response_array));
+				}
+				else{
+					$response_array = array(
+						'status_code' => "0",
+						'status' => false,
+						'message' => "Order History result not found.",
+						'product_details' => $resultSet
+					);
+					$this->output
+					->set_content_type('application/json')
+					->set_output(json_encode($response_array));
+				}
+
+				
 			}
-
-
 		}
 		else{
 			$response_array = array(

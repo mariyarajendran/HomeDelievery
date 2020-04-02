@@ -43,22 +43,24 @@ class OrderModel extends CI_Model{
 
 
 
-	public function getAllOrderDatas($data){
+	public function getAllOrderDatas($data,$pagecount){
 		$this->db->select('*');
 		$this->db->from('order_master');
 		$this->db->join('product_master','order_master.product_id=product_master.product_id');
 		$this->db->where('order_master.user_id',$data);
+		$this->db->limit(10,$pagecount); 
 		$query_result=$this->db->get();
 		return $query_result->result_array();
 	} 
 
-	public function getAllOrderByDate($data,$from_date,$to_date){
+	public function getAllOrderByDate($data,$from_date,$to_date,$pagecount){
 		$this->db->select('*');
 		$this->db->from('order_master');
 		$this->db->join('product_master','order_master.product_id=product_master.product_id');
 		$this->db->where('order_master.order_date >=', $from_date);
 		$this->db->where('order_master.order_date <=', $to_date);
 		$this->db->where('order_master.user_id',$data);
+		$this->db->limit(10,$pagecount); 
 		$query_result=$this->db->get();
 		return $query_result->result_array();
 	} 

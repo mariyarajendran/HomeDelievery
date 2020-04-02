@@ -31,22 +31,24 @@ class CartModel extends CI_Model{
 	}
 
 
-	public function getAllCartDatas($data){
+	public function getAllCartDatas($data,$pagecount){
 		$this->db->select('*');
 		$this->db->from('cart_master');
 		$this->db->join('product_master','cart_master.product_id=product_master.product_id');
 		$this->db->where('cart_master.user_id',$data);
+		$this->db->limit(10,$pagecount); 
 		$query_result=$this->db->get();
 		return $query_result->result_array();
 	} 
 
-	public function getAllCartByDate($data,$from_date,$to_date){
+	public function getAllCartByDate($data,$from_date,$to_date,$pagecount){
 		$this->db->select('*');
 		$this->db->from('cart_master');
 		$this->db->join('product_master','cart_master.product_id=product_master.product_id');
 		$this->db->where('cart_master.cart_date >=', $from_date);
 		$this->db->where('cart_master.cart_date <=', $to_date);
 		$this->db->where('cart_master.user_id',$data);
+		$this->db->limit(10,$pagecount); 
 		$query_result=$this->db->get();
 		return $query_result->result_array();
 	} 

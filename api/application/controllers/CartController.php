@@ -182,16 +182,31 @@ class CartController extends API_Controller{
 		$json_request_body = file_get_contents('php://input');
 		$data = json_decode($json_request_body, true);
 
-		if(isset($data['user_id']) && isset($data['from_date']) && isset($data['to_date'])){
+		if(isset($data['user_id']) && isset($data['from_date']) && isset($data['to_date']) && isset($data['page_count'])){
 			$user_id = $data['user_id'];
 			$from_date = $data['from_date'];
 			$to_date = $data['to_date'];
+			$page_count = $data['page_count'];
 
-			if(empty($from_date) && empty($to_date)){
-				$result_query = $this->CartModel->getAllCartDatas($user_id);
+			if($page_count==''){
+				$response_array = array(
+					'status_code' => "0",
+					'status' => "fails",
+					'message' => "Page Count must be not empty",
+				);
+				$this->output
+				->set_content_type('application/json')
+				->set_output(json_encode($response_array));
 			}else{
-				$result_query = $this->CartModel->getAllCartByDate($user_id,$from_date,$to_date);
+				$page_count = ($page_count * 10);
+				if(empty($from_date) && empty($to_date)){
+					$result_query = $this->CartModel->getAllCartDatas($user_id,$page_count);
+				}else{
+					$result_query = $this->CartModel->getAllCartByDate($user_id,$from_date,$to_date,$page_count);
+				}
 			}
+
+
 			//print_r($result_query);
 			$resultSet = Array();
 			if($result_query)
