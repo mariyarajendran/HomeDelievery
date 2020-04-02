@@ -102,6 +102,7 @@ class ProfileController extends API_Controller{
    $json_request_body = file_get_contents('php://input');
    $data = json_decode($json_request_body, true);
 
+
    if(isset($data['user_id']) && isset($data['user_name']) 
     && isset($data['user_mailid']) && 
     isset($data['user_mobile_number']) && 
@@ -142,19 +143,24 @@ class ProfileController extends API_Controller{
     } if(empty($user_address)){
       $user_address=$db_user_address;
     }
-    if(empty($user_profile_img)){
-      $user_profile_img=$db_user_profile_img;
-    }
+
+    $image_url_path = "uploads/profile/".$user_mobile_number.".png";
+
     $user_data = array(
       'user_username' => $user_name,
       'user_emailid' => $user_mailid,
       'user_mobilenumber' => $user_mobile_number,
       'user_address' => $user_address,
-      'user_profile_img' => $user_profile_img
+      'user_profile_img' => $image_url_path
     );
     $result_query = $this->ProfileModel->updateUserDatas($user_id,$user_data);
     if($result_query)
     {
+      if(!empty($user_profile_img)){
+        $path = "uploads/profile/".$user_mobile_number.".png";
+        $user_profile_img = preg_replace('#data:image/[^;]+;base64,#', '', $user_profile_img);
+        $status = file_put_contents($path,base64_decode($user_profile_img));
+      }
       $response_array = array(
         'status_code' => "1",
         'status' => true,

@@ -19,6 +19,15 @@ class AdminAddProductModel extends CI_Model{
 		return $query_result->result_array();
 	} 
 
+	public function getProductCount(){
+		$this->db->select('*');
+		$this->db->from('product_master');
+		$this->db->limit(1);
+		$this->db->order_by('product_id',"DESC");
+		$query_result=$this->db->get();
+		return $query_result->result_array();
+	} 
+
 
 	public function deleteProductModel($id){
 		$this->db

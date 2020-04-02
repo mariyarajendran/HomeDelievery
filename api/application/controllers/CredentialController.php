@@ -338,6 +338,8 @@ public function userSignup(){
         $query_result_duplicate = $this->CredentialModel->checkduplicate_mobilenumber($check_duplicate_array);
         $randomOTP = substr(str_shuffle("0123456789"), 0, 4);
 
+        $image_url_path = "uploads/profile/".$mobile_number.".png";
+
         if($query_result_duplicate == 0){
           $signup_array = array(
             'user_username' => $user_name,
@@ -345,7 +347,7 @@ public function userSignup(){
             'user_mobilenumber' => $mobile_number,
             'user_address' => $user_address,
             'user_password' => $user_password,
-            'user_profile_img' => $user_profile_img,
+            'user_profile_img' => $image_url_path,
             'user_otp' => $randomOTP,
             'user_register_status' => "0",
             'user_firebasekey' => "",
@@ -358,6 +360,11 @@ public function userSignup(){
           $result_query = $this->CredentialModel->signupmodel($signup_array);
           if($result_query)
           {
+
+            $path = "uploads/profile/".$mobile_number.".png";
+            $user_profile_img = preg_replace('#data:image/[^;]+;base64,#', '', $user_profile_img);
+            $status = file_put_contents($path,base64_decode($user_profile_img));
+
             $response_array = array(
              'status_code' => "1",
              'status' => true,

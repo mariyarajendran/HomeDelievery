@@ -11,30 +11,31 @@ class AdminAddProductController extends API_Controller{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
 
-    
+
     $this->_APIConfig([
       'methods'                              => ['POST','GET'],
       'requireAuthorization'                 => true,
       'limit' => [100, 'ip', 'everyday'] ,
       'data' => [ 'status_code' => '404' ],
     ]);
-	}
+  }
 
 
-	public function index()
-	{
-		$this->load->view('demo');
-		$this->load->library('database');
-		$this->load->library('Authorization_Token');
+  public function index()
+  {
+    $this->load->view('demo');
+    $this->load->library('database');
+    $this->load->library('Authorization_Token');
 
 
-	}
+  }
 
 
   public function adminAddProductDatas(){
    $this->load->model('AdminAddProductModel');
    $json_request_body = file_get_contents('php://input');
    $data = json_decode($json_request_body, true);
+
 
    if(isset($data['product_name']) && isset($data['product_cost']) && isset($data['product_image']) 
     && isset($data['product_short_descr']) 
@@ -110,39 +111,55 @@ class AdminAddProductController extends API_Controller{
     ->set_output(json_encode($response_array));
   }
   else{
-    $product_array = array(
-      'product_name' => $product_name,
-      'product_cost' => $product_cost,
-      'product_image' => $product_image,
-      'product_short_descr' => $product_short_descr,
-      'product_long_descr' => $product_long_descr,
-      'product_offers' => $product_offers
-    );
 
-    $result_query = $this->AdminAddProductModel->addProductModel($product_array);
-    if($result_query)
-    {
-      $response_array = array(
-       'status_code' => "1",
-       'status' => true,
-       'message' => "New Product Added Successfully"
-     );
-      $this->output
-      ->set_content_type('application/json')
-      ->set_output(json_encode($response_array));
-    }
-    else{
-      $response_array = array(
-       'status_code' => "0",
-       'status' => false,
-       'message' => "Something Wrong in Add Product",
-     );
-      $this->output
-      ->set_content_type('application/json')
-      ->set_output(json_encode($response_array));
-    }
-
+    $total_product_count=$this->AdminAddProductModel->getProductCount();
+    if($total_product_count){
+      //print_r($total_product_count[0]['product_id']);
+     $product_id_for_image=$total_product_count[0]['product_id']+1;
+   }else{
+    $product_id_for_image=1;
   }
+
+  $image_url_path = "uploads/product/".$product_id_for_image.".png";
+
+  $product_array = array(
+    'product_name' => $product_name,
+    'product_cost' => $product_cost,
+    'product_image' => $image_url_path,
+    'product_short_descr' => $product_short_descr,
+    'product_long_descr' => $product_long_descr,
+    'product_offers' => $product_offers
+  );
+
+  $result_query = $this->AdminAddProductModel->addProductModel($product_array);
+  if($result_query)
+  {
+
+    $path = "uploads/product/".$product_id_for_image.".png";
+    $product_image = preg_replace('#data:image/[^;]+;base64,#', '', $product_image);
+    $status = file_put_contents($path,base64_decode($product_image));
+
+    $response_array = array(
+     'status_code' => "1",
+     'status' => true,
+     'message' => "New Product Added Successfully"
+   );
+    $this->output
+    ->set_content_type('application/json')
+    ->set_output(json_encode($response_array));
+  }
+  else{
+    $response_array = array(
+     'status_code' => "0",
+     'status' => false,
+     'message' => "Something Wrong in Add Product",
+   );
+    $this->output
+    ->set_content_type('application/json')
+    ->set_output(json_encode($response_array));
+  }
+
+}
 }
 else{
   $response_array = array(
@@ -160,6 +177,7 @@ public function updateProductDetails(){
  $this->load->model('AdminAddProductModel');
  $json_request_body = file_get_contents('php://input');
  $data = json_decode($json_request_body, true);
+
 
  if(isset($data['product_name']) && isset($data['product_cost']) && isset($data['product_image']) 
   && isset($data['product_short_descr']) 
@@ -197,19 +215,20 @@ public function updateProductDetails(){
     $product_name = $db_product_name;
   } if(empty($product_cost)){
     $product_cost=$db_product_cost;
-  } if(empty($product_image)){
-    $product_image=$db_product_image;
-  } if(empty($product_short_descr)){
+  }if(empty($product_short_descr)){
     $product_short_descr=$db_product_short_descr;
   } if(empty($product_long_descr)){
     $product_long_descr=$db_product_long_descr;
   } if(empty($product_offers)){
     $product_offers=$db_product_offers;
   }
+
+  $image_url_path = "uploads/product/".$product_id.".png";
+
   $product_data = array(
     'product_name' => $product_name,
     'product_cost' => $product_cost,
-    'product_image' => $product_image,
+    'product_image' => $image_url_path,
     'product_short_descr' => $product_short_descr,
     'product_long_descr' => $product_long_descr,
     'product_offers' => $product_offers
@@ -217,6 +236,12 @@ public function updateProductDetails(){
   $result_query = $this->AdminAddProductModel->updateProductDatas($product_id,$product_data);
   if($result_query)
   {
+    if(!empty($product_image)){
+      $path = "uploads/product/".$product_id.".png";
+      $product_image = preg_replace('#data:image/[^;]+;base64,#', '', $product_image);
+      $status = file_put_contents($path,base64_decode($product_image));
+    }
+
     $response_array = array(
       'status_code' => "1",
       'status' => true,
