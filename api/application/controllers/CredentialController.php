@@ -11,115 +11,115 @@ class CredentialController extends API_Controller{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
 
-    
-    $this->_APIConfig([
-      'methods'                              => ['POST','GET'],
-      'requireAuthorization'                 => true,
-      'limit' => [100, 'ip', 'everyday'] ,
-      'data' => [ 'status_code' => '404' ],
-    ]);
-	}
+
+    // $this->_APIConfig([
+    //   'methods'                              => ['POST','GET'],
+    //   'requireAuthorization'                 => true,
+    //   'limit' => [100, 'ip', 'everyday'] ,
+    //   'data' => [ 'status_code' => '404' ],
+    // ]);
+  }
 
 
-	public function index()
-	{
-		$this->load->view('demo');
-		$this->load->library('database');
-		$this->load->library('Authorization_Token');
+  public function index()
+  {
+    $this->load->view('demo');
+    $this->load->library('database');
+    $this->load->library('Authorization_Token');
 
 
-	}
+  }
 
 
 
-	public function do_upload()
-	{
-		$config['upload_path']                      = './uploads/';
-		$config['allowed_types']                    = 'gif|jpg|png';
-		$config['max_size']                         = 100;
-		$config['max_width']                        = 1024;
-		$config['max_height']                       = 768;
+  public function do_upload()
+  {
+    $config['upload_path']                      = './uploads/';
+    $config['allowed_types']                    = 'gif|jpg|png';
+    $config['max_size']                         = 100;
+    $config['max_width']                        = 1024;
+    $config['max_height']                       = 768;
 
-		$this->load->library('upload', $config);
-		$count = count($_FILES['userfile']['name']);
+    $this->load->library('upload', $config);
+    $count = count($_FILES['userfile']['name']);
 
-		for ($k = 0; $k < $count; $k++) {
-			if (!$this->upload->do_upload('userfile',$k)) {
-				$error = array('error' => $this->upload->display_errors());
-				print_r($error);
-			}else{
-        $udata[$k] = $this->upload->data(); 
-      }
+    for ($k = 0; $k < $count; $k++) {
+     if (!$this->upload->do_upload('userfile',$k)) {
+      $error = array('error' => $this->upload->display_errors());
+      print_r($error);
+    }else{
+      $udata[$k] = $this->upload->data(); 
     }
   }
+}
 
 
 
-  public function logout(){
-    $this->load->model('CredentialModel');
-    
+public function logout(){
+  $this->load->model('CredentialModel');
 
-    $json_request_body = file_get_contents('php://input');
-    $data = json_decode($json_request_body, true);
 
-    if(isset($data['user_id'])){
-      $user_id = $data['user_id'];
+  $json_request_body = file_get_contents('php://input');
+  $data = json_decode($json_request_body, true);
 
-      $payload = [
-        'token_generation' => "Token Generated",
-      ];
-      $this->load->library('Authorization_Token');
-      $token = $this->authorization_token->generateToken($payload);
+  if(isset($data['user_id'])){
+    $user_id = $data['user_id'];
 
-      if(empty($user_id)){
-        $response_array = array(
-         'status_code' => "0",
-         'status' => "fails",
-         'message' => "User ID Missing.please check",
-       );
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($response_array));
-      }
-      else{
-       $updateUserToken = array(
-        'user_access_token' => $token,
-        'user_status' => "InActive");
-       
-       $result_query = $this->CredentialModel->updateUserDatas($user_id,$updateUserToken);
-       if($result_query)
-       {
-        $response_array = array(
-          'status_code' => "1",
-          'status' => true,
-          'message' => "Logout Successfully"
-        );
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($response_array));
-      }
-      else{
-        $response_array = array(
-          'status_code' => "0",
-          'status' => false,
-          'message' => "Something Wrong in Registartion",
-        );
-        $this->output
-        ->set_content_type('application/json')
-        ->set_output(json_encode($response_array));
-      }
+    $payload = [
+      'token_generation' => "Token Generated",
+    ];
+    $this->load->library('Authorization_Token');
+    $token = $this->authorization_token->generateToken($payload);
+
+    if(empty($user_id)){
+      $response_array = array(
+       'status_code' => "0",
+       'status' => "fails",
+       'message' => "User ID Missing.please check",
+     );
+      $this->output
+      ->set_content_type('application/json')
+      ->set_output(json_encode($response_array));
+    }
+    else{
+     $updateUserToken = array(
+      'user_access_token' => $token,
+      'user_status' => "InActive");
+
+     $result_query = $this->CredentialModel->updateUserDatas($user_id,$updateUserToken);
+     if($result_query)
+     {
+      $response_array = array(
+        'status_code' => "1",
+        'status' => true,
+        'message' => "Logout Successfully"
+      );
+      $this->output
+      ->set_content_type('application/json')
+      ->set_output(json_encode($response_array));
+    }
+    else{
+      $response_array = array(
+        'status_code' => "0",
+        'status' => false,
+        'message' => "Something Wrong in Registartion",
+      );
+      $this->output
+      ->set_content_type('application/json')
+      ->set_output(json_encode($response_array));
     }
   }
-  else{
-    $response_array = array(
-      'status_code' => "0",
-      'status' => false,
-      'message' => "Please give all request params"
-    );
-    $this->output
-    ->set_content_type('application/json')
-    ->set_output(json_encode($response_array));
-  }
+}
+else{
+  $response_array = array(
+    'status_code' => "0",
+    'status' => false,
+    'message' => "Please give all request params"
+  );
+  $this->output
+  ->set_content_type('application/json')
+  ->set_output(json_encode($response_array));
+}
 }
 
 
@@ -252,11 +252,20 @@ public function userSignup(){
  $this->load->model('CredentialModel');
  $json_request_body = file_get_contents('php://input');
  $data = json_decode($json_request_body, true);
- $user_name = $data['user_username'];
+
+
+ if(isset($data['user_username']) 
+  && isset($data['user_emailid']) && 
+  isset($data['user_mobile_number']) && 
+  isset($data['user_address']) 
+  && isset($data['user_profile_img'])){
+
+   $user_name = $data['user_username'];
       $email_id = $data['user_emailid'];    //optional
       $mobile_number = $data['user_mobile_number'];
       $user_address = $data['user_address'];
       $user_password = $data['user_password'];
+      $user_profile_img = $data['user_profile_img'];
       $payload = [
         'token_generation' => "Token Generated",
       ];
@@ -292,6 +301,16 @@ public function userSignup(){
         $this->output
         ->set_content_type('application/json')
         ->set_output(json_encode($response_array));
+      }  
+      else if(empty($user_address)){
+        $response_array = array(
+         'status_code' => "0",
+         'status' => "fails",
+         'message' => "Enter Address Number",
+       );
+        $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($response_array));
       }
 
       else if(empty($user_password)){
@@ -299,6 +318,16 @@ public function userSignup(){
           'status_code' => "0",
           'status' => "fails",
           'message' => "Enter Password",
+        );
+        $this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($response_array));
+      }
+      else if(empty($user_profile_img)){
+        $response_array = array(
+          'status_code' => "0",
+          'status' => "fails",
+          'message' => "Choose profile image",
         );
         $this->output
         ->set_content_type('application/json')
@@ -316,6 +345,7 @@ public function userSignup(){
             'user_mobilenumber' => $mobile_number,
             'user_address' => $user_address,
             'user_password' => $user_password,
+            'user_profile_img' => $user_profile_img,
             'user_otp' => $randomOTP,
             'user_register_status' => "0",
             'user_firebasekey' => "",
@@ -373,49 +403,20 @@ public function userSignup(){
           ->set_content_type('application/json')
           ->set_output(json_encode($response_array));
         }
-
       }
-
+    }
+    else{
+      $response_array = array(
+        'status_code' => "0",
+        'status' => false,
+        'message' => "Please give all request params"
+      );
+      $this->output
+      ->set_content_type('application/json')
+      ->set_output(json_encode($response_array));
     }
 
-
-
-    private function key()
-    {
-        // use database query for get valid key
-     return 1452;
-   }
-
-
-
-   public function demoapi()
-   {
-     header("Access-Control-Allow-Origin: *");
-// API Configuration
-     $this->_apiConfig([
-/**
-* By Default Request Method `GET`
-*/
-'methods'                                    => ['POST'], // 'GET', 'OPTIONS'
-/**
-* Number limit, type limit, time limit (last minute)
-*/
-'limit'                                      => [5, 'ip', 'everyday'],
-/**
-* type :: ['header', 'get', 'post']
-* key  :: ['table : Check Key in Database', 'key']
-*/
-'key'                                        => ['POST', $this->key() ], // type, {key}|table (by default)
-]);
-
-// return data
-     $this->api_return(
-      [
-       'status'                                  => true,
-       "result"                                  => "Return API Response",
-     ],
-     200);
-   }
+  }}
 
 
 
@@ -425,66 +426,7 @@ public function userSignup(){
 
 
 
-   public function demoapilogin()
-   {
-     header("Access-Control-Allow-Origin: *");
-        // API Configuration
-     $this->_apiConfig([
-      'methods'                                  => ['POST'],
-      'requireAuthorization'                     => false,
-      //'limit' => [5, 'ip', 5],
-    ]);
 
-     $payload                                     = [
-      'id'                                       => "87878",
-      'other'                                    => "kjdfkdkdv"
-
-    ];
-
-    $this->load->library('Authorization_Token');
-
-    $token                                       = $this->authorization_token->generateToken($payload);
-        // return data
-    $this->api_return(
-      [
-       'status'                                  => true,
-       "result"                                  => [
-        'token'                                  => $token,
-      ],
-
-    ],
-    200);
-  }
-    /**
-     * view method
-     *
-     * @link [api/user/view]
-     * @method POST
-     * @return Response|void
-     */
-    public function demoapiview()
-    {
-    	header("Access-Control-Allow-Origin: *");
-        // API Configuration [Return Array:     User Token Data]
-    	$user_data                               = $this->_apiConfig([
-    		'methods'                              => ['POST'],
-    		'requireAuthorization'                 => true,
-    	]);
-        // return data
-    	$this->api_return(
-    		[
-    			'status'                              => true,
-    			"result"                              => [
-    				'user_data'                          => $user_data['token_data']
-    			],
-    		],
-    		200);
-    }
-
-
-
-
-  }
 
 
 
