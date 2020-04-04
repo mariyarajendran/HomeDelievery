@@ -16,7 +16,7 @@ class OrderController extends API_Controller{
 			'methods'                              => ['POST','GET'],
 			'requireAuthorization'                 => true,
 			'limit' => [100, 'ip', 'everyday'] ,
-			'data' => [ 'status_code' => '404' ],
+			'data' => [ 'status_code' => '0' ],
 		]);
 	}
 
@@ -81,7 +81,7 @@ class OrderController extends API_Controller{
 					$result_query = $this->OrderModel->deleteToCartModel($cart_id);
 					$response_array = array(
 						'status_code' => "1",
-						'status' => true,
+						'status' => HTTP_200,
 						'message' => "Order Placed Successfully"
 					);
 					$this->output
@@ -91,7 +91,7 @@ class OrderController extends API_Controller{
 				else{
 					$response_array = array(
 						'status_code' => "0",
-						'status' => false,
+						'status' => HTTP_400,
 						'message' => "Failed to place order."
 					);
 					$this->output
@@ -105,7 +105,7 @@ class OrderController extends API_Controller{
 		else{
 			$response_array = array(
 				'status_code' => "0",
-				'status' => false,
+				'status' => HTTP_400,
 				'message' => "Please give all request params",
 				'user_details' => array(
 					'user_id' => "",
@@ -149,7 +149,7 @@ class OrderController extends API_Controller{
 				{
 					$response_array = array(
 						'status_code' => "1",
-						'status' => true,
+						'status' => HTTP_200,
 						'message' => "Order Cancelled Successfully",
 					);
 					$this->output
@@ -159,7 +159,7 @@ class OrderController extends API_Controller{
 				else{
 					$response_array = array(
 						'status_code' => "0",
-						'status' => false,
+						'status' => HTTP_400,
 						'message' => "Something Wrong, while Cancel Order",
 					);
 					$this->output
@@ -172,7 +172,7 @@ class OrderController extends API_Controller{
 		}else{
 			$response_array = array(
 				'status_code' => "0",
-				'status' => false,
+				'status' => HTTP_400,
 				'message' => "Please give all request params",
 				'user_details' => array(
 					'user_id' => "",
@@ -205,7 +205,7 @@ class OrderController extends API_Controller{
 			if($page_count==''){
 				$response_array = array(
 					'status_code' => "0",
-					'status' => "fails",
+					'status' => HTTP_400,
 					'message' => "Page Count must be not empty",
 				);
 				$this->output
@@ -242,7 +242,7 @@ class OrderController extends API_Controller{
 
 					$response_array = array(
 						'status_code' => "1",
-						'status' => true,
+						'status' => HTTP_200,
 						'message' => "Order History Received Successfully",
 						'product_details' => $resultSet
 					);
@@ -253,7 +253,7 @@ class OrderController extends API_Controller{
 				else{
 					$response_array = array(
 						'status_code' => "0",
-						'status' => false,
+						'status' => HTTP_400,
 						'message' => "Order History result not found.",
 						'product_details' => $resultSet
 					);
@@ -268,7 +268,7 @@ class OrderController extends API_Controller{
 		else{
 			$response_array = array(
 				'status_code' => "0",
-				'status' => false,
+				'status' => HTTP_400,
 				'message' => "Please give all request params",
 				'user_details' => array(
 					'user_id' => "",

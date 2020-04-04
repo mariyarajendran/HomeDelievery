@@ -16,7 +16,7 @@ class CartController extends API_Controller{
 			'methods'                              => ['POST','GET'],
 			'requireAuthorization'                 => true,
 			'limit' => [100, 'ip', 'everyday'] ,
-			'data' => [ 'status_code' => '404' ],
+			'data' => [ 'status_code' => '0' ],
 		]);
 	}
 
@@ -41,7 +41,7 @@ class CartController extends API_Controller{
 			if(empty($user_id)){
 				$response_array = array(
 					'status_code' => "0",
-					'status' => "fails",
+					'status' => HTTP_400,
 					'message' => "User id missing",
 				);
 				$this->output
@@ -51,7 +51,7 @@ class CartController extends API_Controller{
 			else if(empty($product_id)){
 				$response_array = array(
 					'status_code' => "0",
-					'status' => "fails",
+					'status' => HTTP_400,
 					'message' => "Product id missing",
 				);
 				$this->output
@@ -68,7 +68,7 @@ class CartController extends API_Controller{
 				{
 					$response_array = array(
 						'status_code' => "1",
-						'status' => true,
+						'status' => HTTP_200,
 						'message' => "Add to cart Successfully"
 					);
 					$this->output
@@ -78,7 +78,7 @@ class CartController extends API_Controller{
 				else{
 					$response_array = array(
 						'status_code' => "0",
-						'status' => false,
+						'status' => HTTP_400,
 						'message' => "Failed to add cart."
 					);
 					$this->output
@@ -92,7 +92,7 @@ class CartController extends API_Controller{
 		else{
 			$response_array = array(
 				'status_code' => "0",
-				'status' => false,
+				'status' => HTTP_400,
 				'message' => "Please give all request params",
 				'user_details' => array(
 					'user_id' => "",
@@ -122,7 +122,7 @@ class CartController extends API_Controller{
 			if(empty($cart_id)){
 				$response_array = array(
 					'status_code' => "0",
-					'status' => "fails",
+					'status' => HTTP_400,
 					'message' => "Cart id missing",
 				);
 				$this->output
@@ -135,7 +135,7 @@ class CartController extends API_Controller{
 				{
 					$response_array = array(
 						'status_code' => "1",
-						'status' => true,
+						'status' => HTTP_200,
 						'message' => "Delete to cart Successfully"
 					);
 					$this->output
@@ -145,7 +145,7 @@ class CartController extends API_Controller{
 				else{
 					$response_array = array(
 						'status_code' => "0",
-						'status' => false,
+						'status' => HTTP_400,
 						'message' => "Failed to delete cart."
 					);
 					$this->output
@@ -159,7 +159,7 @@ class CartController extends API_Controller{
 		else{
 			$response_array = array(
 				'status_code' => "0",
-				'status' => false,
+				'status' => HTTP_400,
 				'message' => "Please give all request params",
 				'user_details' => array(
 					'user_id' => "",
@@ -191,7 +191,7 @@ class CartController extends API_Controller{
 			if($page_count==''){
 				$response_array = array(
 					'status_code' => "0",
-					'status' => "fails",
+					'status' => HTTP_400,
 					'message' => "Page Count must be not empty",
 				);
 				$this->output
@@ -229,7 +229,7 @@ class CartController extends API_Controller{
 
 				$response_array = array(
 					'status_code' => "1",
-					'status' => true,
+					'status' => HTTP_200,
 					'message' => "Cart Details Received Successfully",
 					'product_details' => $resultSet
 				);
@@ -240,7 +240,7 @@ class CartController extends API_Controller{
 			else{
 				$response_array = array(
 					'status_code' => "0",
-					'status' => false,
+					'status' => HTTP_400,
 					'message' => "Cart Details result not found.",
 					'product_details' => $resultSet
 				);
@@ -254,7 +254,7 @@ class CartController extends API_Controller{
 		else{
 			$response_array = array(
 				'status_code' => "0",
-				'status' => false,
+				'status' => HTTP_400,
 				'message' => "Please give all request params",
 				'user_details' => array(
 					'user_id' => "",

@@ -12,13 +12,15 @@ class AdminAddProductController extends API_Controller{
 		$this->load->helper(array('form', 'url'));
 
 
+
     $this->_APIConfig([
       'methods'                              => ['POST','GET'],
       'requireAuthorization'                 => true,
       'limit' => [100, 'ip', 'everyday'] ,
-      'data' => [ 'status_code' => '404' ],
+      'data' => [ 'status_code' => '0' ],
     ]);
   }
+
 
 
   public function index()
@@ -26,6 +28,7 @@ class AdminAddProductController extends API_Controller{
     $this->load->view('demo');
     $this->load->library('database');
     $this->load->library('Authorization_Token');
+    
 
 
   }
@@ -35,6 +38,7 @@ class AdminAddProductController extends API_Controller{
    $this->load->model('AdminAddProductModel');
    $json_request_body = file_get_contents('php://input');
    $data = json_decode($json_request_body, true);
+
 
 
    if(isset($data['product_name']) && isset($data['product_cost']) && isset($data['product_image']) 
@@ -52,7 +56,7 @@ class AdminAddProductController extends API_Controller{
    if(empty($product_name)){
     $response_array = array(
      'status_code' => "0",
-     'status' => "fails",
+     'status' => HTTP_400,
      'message' => "Enter Productname",
    );
     $this->output
@@ -62,7 +66,7 @@ class AdminAddProductController extends API_Controller{
   else if(empty($product_cost)){
     $response_array = array(
      'status_code' => "0",
-     'status' => "fails",
+     'status' => HTTP_400,
      'message' => "Enter Product Cost",
    );
     $this->output
@@ -72,7 +76,7 @@ class AdminAddProductController extends API_Controller{
   else if(empty($product_image)){
     $response_array = array(
      'status_code' => "0",
-     'status' => "fails",
+     'status' => HTTP_400,
      'message' => "Enter Product Image",
    );
     $this->output
@@ -83,7 +87,7 @@ class AdminAddProductController extends API_Controller{
   else if(empty($product_short_descr)){
     $response_array = array(
       'status_code' => "0",
-      'status' => "fails",
+      'status' => HTTP_400,
       'message' => "Enter Product Short Descriptions",
     );
     $this->output
@@ -93,7 +97,7 @@ class AdminAddProductController extends API_Controller{
   else if(empty($product_long_descr)){
     $response_array = array(
       'status_code' => "0",
-      'status' => "fails",
+      'status' => HTTP_400,
       'message' => "Enter Product Long Descriptions",
     );
     $this->output
@@ -103,7 +107,7 @@ class AdminAddProductController extends API_Controller{
   else if(empty($product_offers)){
     $response_array = array(
       'status_code' => "0",
-      'status' => "fails",
+      'status' => HTTP_400,
       'message' => "Enter Product offers",
     );
     $this->output
@@ -141,7 +145,7 @@ class AdminAddProductController extends API_Controller{
 
     $response_array = array(
      'status_code' => "1",
-     'status' => true,
+     'status' => HTTP_200,
      'message' => "New Product Added Successfully"
    );
     $this->output
@@ -151,7 +155,7 @@ class AdminAddProductController extends API_Controller{
   else{
     $response_array = array(
      'status_code' => "0",
-     'status' => false,
+     'status' => HTTP_400,
      'message' => "Something Wrong in Add Product",
    );
     $this->output
@@ -164,7 +168,7 @@ class AdminAddProductController extends API_Controller{
 else{
   $response_array = array(
     'status_code' => "0",
-    'status' => false,
+    'status' => HTTP_400,
     'message' => "Please give all request params",
   );
   $this->output
@@ -195,7 +199,7 @@ public function updateProductDetails(){
  if(empty($product_id)){
   $response_array = array(
    'status_code' => "0",
-   'status' => "fails",
+   'status' => HTTP_400,
    'message' => "Product Id Missing.Unable to update product datas",
  );
   $this->output
@@ -244,7 +248,7 @@ public function updateProductDetails(){
 
     $response_array = array(
       'status_code' => "1",
-      'status' => true,
+      'status' => HTTP_200,
       'message' => "Product Details Updated Successfully",
     );
     $this->output
@@ -254,7 +258,7 @@ public function updateProductDetails(){
   else{
     $response_array = array(
       'status_code' => "0",
-      'status' => false,
+      'status' =>HTTP_400,
       'message' => "Something Wrong, while updating Datas",
     );
     $this->output
@@ -265,7 +269,7 @@ public function updateProductDetails(){
 }else{
   $response_array = array(
     'status_code' => "0",
-    'status' => false,
+    'status' => HTTP_400,
     'message' => "Please give all request params",
   );
   $this->output
@@ -289,7 +293,7 @@ public function adminDeleteProduct(){
     if(empty($product_id)){
       $response_array = array(
         'status_code' => "0",
-        'status' => "fails",
+        'status' => HTTP_400,
         'message' => "Product id missing",
       );
       $this->output
@@ -302,7 +306,7 @@ public function adminDeleteProduct(){
       {
         $response_array = array(
           'status_code' => "1",
-          'status' => true,
+          'status' => HTTP_200,
           'message' => "Product Deleted Successfully"
         );
         $this->output
@@ -312,7 +316,7 @@ public function adminDeleteProduct(){
       else{
         $response_array = array(
           'status_code' => "0",
-          'status' => false,
+          'status' => HTTP_400,
           'message' => "Failed to delete product."
         );
         $this->output
@@ -326,7 +330,7 @@ public function adminDeleteProduct(){
   else{
     $response_array = array(
       'status_code' => "0",
-      'status' => false,
+      'status' => HTTP_400,
       'message' => "Please give all request params"
     );
     $this->output
@@ -347,7 +351,7 @@ public function confirmAndCloseOrder(){
     if(empty($order_id)){
       $response_array = array(
         'status_code' => "0",
-        'status' => "fails",
+        'status' => HTTP_400,
         'message' => "Order Id Missing.Unable to update user datas",
       );
       $this->output
@@ -357,7 +361,7 @@ public function confirmAndCloseOrder(){
     else if(empty($order_status)){
       $response_array = array(
         'status_code' => "0",
-        'status' => "fails",
+        'status' => HTTP_400,
         'message' => "Order Status Missing.Unable to update user datas",
       );
       $this->output
@@ -372,7 +376,7 @@ public function confirmAndCloseOrder(){
       {
         $response_array = array(
           'status_code' => "1",
-          'status' => true,
+          'status' => HTTP_200,
           'message' => "Order Status Updated Successfully",
         );
         $this->output
@@ -382,7 +386,7 @@ public function confirmAndCloseOrder(){
       else{
         $response_array = array(
           'status_code' => "0",
-          'status' => false,
+          'status' => HTTP_400,
           'message' => "Something Wrong, while update Order Status",
         );
         $this->output
@@ -395,7 +399,7 @@ public function confirmAndCloseOrder(){
   }else{
     $response_array = array(
       'status_code' => "0",
-      'status' => false,
+      'status' => HTTP_400,
       'message' => "Please give all request params"
     );
     $this->output

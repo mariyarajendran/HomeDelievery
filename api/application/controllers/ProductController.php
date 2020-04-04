@@ -16,7 +16,7 @@ class ProductController extends API_Controller{
 			'methods'                              => ['POST','GET'],
 			'requireAuthorization'                 => true,
 			'limit' => [100, 'ip', 'everyday'] ,
-			'data' => [ 'status_code' => '404' ],
+			'data' => [ 'status_code' => '0' ],
 		]);
 	}
 
@@ -41,7 +41,7 @@ class ProductController extends API_Controller{
 			if($page_count==''){
 				$response_array = array(
 					'status_code' => "0",
-					'status' => "fails",
+					'status' => HTTP_400,
 					'message' => "Page Count must be not empty",
 				);
 				$this->output
@@ -71,7 +71,7 @@ class ProductController extends API_Controller{
 
 					$response_array = array(
 						'status_code' => "1",
-						'status' => true,
+						'status' => HTTP_200,
 						'message' => "Product Details Received Successfully",
 						'product_details' => $resultSet
 					);
@@ -82,7 +82,7 @@ class ProductController extends API_Controller{
 				else{
 					$response_array = array(
 						'status_code' => "0",
-						'status' => false,
+						'status' => HTTP_400,
 						'message' => "Searched product result not found.",
 						'product_details' => $resultSet
 					);
@@ -95,7 +95,7 @@ class ProductController extends API_Controller{
 		else{
 			$response_array = array(
 				'status_code' => "0",
-				'status' => false,
+				'status' => HTTP_400,
 				'message' => "Please give all request params"
 			);
 			$this->output

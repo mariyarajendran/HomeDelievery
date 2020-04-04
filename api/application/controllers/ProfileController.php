@@ -15,7 +15,7 @@ class ProfileController extends API_Controller{
       'methods'                              => ['POST','GET'],
       'requireAuthorization'                 => true,
       'limit' => [100, 'ip', 'everyday'] ,
-      'data' => [ 'status_code' => '404' ],
+      'data' => [ 'status_code' => '0' ],
     ]);
   }
 
@@ -42,7 +42,7 @@ class ProfileController extends API_Controller{
       if(empty($user_id)){
         $response_array = array(
          'status_code' => "0",
-         'status' => "fails",
+         'status' => HTTP_400,
          'message' => "User Id Missing.Unable to read user datas",
        );
         $this->output
@@ -55,7 +55,7 @@ class ProfileController extends API_Controller{
         {
           $response_array = array(
             'status_code' => "1",
-            'status' => true,
+            'status' => HTTP_200,
             'message' => "User Details Received Successfully",
             'user_details' => array('user_id' => $result_query[0]['user_id'],
               'user_name' => $result_query[0]['user_username'],
@@ -73,7 +73,7 @@ class ProfileController extends API_Controller{
         else{
           $response_array = array(
             'status_code' => "0",
-            'status' => false,
+            'status' => HTTP_400,
             'message' => "Something Wrong, while receiving Datas",
           );
           $this->output
@@ -86,7 +86,7 @@ class ProfileController extends API_Controller{
     else{
       $response_array = array(
         'status_code' => "0",
-        'status' => false,
+        'status' => HTTP_400,
         'message' => "Please give all request params"
       );
       $this->output
@@ -119,7 +119,7 @@ class ProfileController extends API_Controller{
    if(empty($user_id)){
     $response_array = array(
      'status_code' => "0",
-     'status' => "fails",
+     'status' => HTTP_400,
      'message' => "User Id Missing.Unable to update user datas",
    );
     $this->output
@@ -163,7 +163,7 @@ class ProfileController extends API_Controller{
       }
       $response_array = array(
         'status_code' => "1",
-        'status' => true,
+        'status' => HTTP_200,
         'message' => "User Details Updated Successfully",
       );
       $this->output
@@ -173,7 +173,7 @@ class ProfileController extends API_Controller{
     else{
       $response_array = array(
         'status_code' => "0",
-        'status' => false,
+        'status' => HTTP_400,
         'message' => "Something Wrong, while updating Datas",
       );
       $this->output
@@ -185,7 +185,7 @@ class ProfileController extends API_Controller{
 else{
   $response_array = array(
     'status_code' => "0",
-    'status' => false,
+    'status' => HTTP_400,
     'message' => "Please give all request params"
   );
   $this->output

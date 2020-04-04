@@ -105,7 +105,7 @@ class Authorization_Token
                     $token_decode = JWT::decode($token_data['token'], $this->token_key, array($this->token_algorithm));
                 }
                 catch(Exception $e) {
-                    return ['status' => FALSE, 'message' => $e->getMessage()];
+                    return ['status' => HTTP_404, 'message' => $e->getMessage()];
                 }
 
                 if(!empty($token_decode) AND is_object($token_decode))
@@ -113,7 +113,7 @@ class Authorization_Token
                     // Check Token API Time [API_TIME]
                     if (empty($token_decode->API_TIME OR !is_numeric($token_decode->API_TIME))) {
                         
-                        return ['status' => FALSE, 'message' => 'Token Time Not Define!'];
+                        return ['status' => HTTP_404, 'message' => 'Token Time Not Define!'];
                     }
                     else
                     {
@@ -123,28 +123,28 @@ class Authorization_Token
                         $time_difference = strtotime('now') - $token_decode->API_TIME;
                         if( $time_difference >= $this->token_expire_time )
                         {
-                            return ['status' => FALSE, 'message' => 'Token Time Expire.'];
+                            return ['status' => HTTP_404, 'message' => 'Token Time Expire.'];
 
                         }else
                         {
                             /**
                              * All Validation False Return Data
                              */
-                            return ['status' => TRUE, 'data' => $token_decode];
+                            return ['status' => HTTP_200, 'data' => $token_decode];
                         }
                     }
                     
                 }else{
-                    return ['status' => FALSE, 'message' => 'Forbidden'];
+                    return ['status' => HTTP_404, 'message' => 'Forbidden'];
                 }
             }
             catch(Exception $e) {
-                return ['status' => FALSE, 'message' => $e->getMessage()];
+                return ['status' => HTTP_404, 'message' => $e->getMessage()];
             }
         }else
         {
             // Authorization Header Not Found!
-            return ['status' => FALSE, 'message' => $token_data['message'] ];
+            return ['status' => HTTP_404, 'message' => $token_data['message'] ];
         }
     }
 

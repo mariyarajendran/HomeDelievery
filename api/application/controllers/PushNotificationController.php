@@ -15,7 +15,7 @@ class PushNotificationController extends API_Controller{
       'methods'                              => ['POST','GET'],
       'requireAuthorization'                 => true,
       'limit' => [100, 'ip', 'everyday'] ,
-      'data' => [ 'status_code' => '404' ],
+      'data' => [ 'status_code' => '0' ],
     ]);
   }
 
@@ -38,7 +38,7 @@ class PushNotificationController extends API_Controller{
      if(empty($user_status)){
        $response_array = array(
         'status_code' => "0",
-        'status' => "fails",
+        'status' => HTTP_400,
         'message' => "User Status Missing.please check",
       );
        $this->output
@@ -47,7 +47,7 @@ class PushNotificationController extends API_Controller{
      }else if(empty($title)){
        $response_array = array(
         'status_code' => "0",
-        'status' => "fails",
+        'status' => HTTP_400,
         'message' => "Title Missing.please check",
       );
        $this->output
@@ -56,7 +56,7 @@ class PushNotificationController extends API_Controller{
      }else if(empty($body)){
        $response_array = array(
         'status_code' => "0",
-        'status' => "fails",
+        'status' => HTTP_400,
         'message' => "Body Missing.please check",
       );
        $this->output
@@ -78,7 +78,7 @@ class PushNotificationController extends API_Controller{
 
         $response_array = array(
           'status_code' => "1",
-          'status' => true,
+          'status' => HTTP_200,
           'message' => "Push Notification successfully send to the selected users",
         );
         $this->output
@@ -88,7 +88,7 @@ class PushNotificationController extends API_Controller{
       else{
         $response_array = array(
           'status_code' => "0",
-          'status' => false,
+          'status' => HTTP_400,
           'message' => "user status data not found"
         );
         $this->output
@@ -102,7 +102,7 @@ class PushNotificationController extends API_Controller{
   else{
     $response_array = array(
       'status_code' => "0",
-      'status' => false,
+      'status' => HTTP_400,
       'message' => "Please give all request params"
     );
     $this->output

@@ -12,45 +12,48 @@ class CredentialController extends API_Controller{
 		$this->load->helper(array('form', 'url'));
 
 
+
+
+
     // $this->_APIConfig([
     //   'methods'                              => ['POST','GET'],
     //   'requireAuthorization'                 => true,
     //   'limit' => [100, 'ip', 'everyday'] ,
     //   'data' => [ 'status_code' => '404' ],
     // ]);
+ }
+
+
+ public function index()
+ {
+  $this->load->view('demo');
+  $this->load->library('database');
+  $this->load->library('Authorization_Token');
+
+
+}
+
+
+
+public function do_upload()
+{
+  $config['upload_path']                      = './uploads/';
+  $config['allowed_types']                    = 'gif|jpg|png';
+  $config['max_size']                         = 100;
+  $config['max_width']                        = 1024;
+  $config['max_height']                       = 768;
+
+  $this->load->library('upload', $config);
+  $count = count($_FILES['userfile']['name']);
+
+  for ($k = 0; $k < $count; $k++) {
+   if (!$this->upload->do_upload('userfile',$k)) {
+    $error = array('error' => $this->upload->display_errors());
+    print_r($error);
+  }else{
+    $udata[$k] = $this->upload->data(); 
   }
-
-
-  public function index()
-  {
-    $this->load->view('demo');
-    $this->load->library('database');
-    $this->load->library('Authorization_Token');
-
-
-  }
-
-
-
-  public function do_upload()
-  {
-    $config['upload_path']                      = './uploads/';
-    $config['allowed_types']                    = 'gif|jpg|png';
-    $config['max_size']                         = 100;
-    $config['max_width']                        = 1024;
-    $config['max_height']                       = 768;
-
-    $this->load->library('upload', $config);
-    $count = count($_FILES['userfile']['name']);
-
-    for ($k = 0; $k < $count; $k++) {
-     if (!$this->upload->do_upload('userfile',$k)) {
-      $error = array('error' => $this->upload->display_errors());
-      print_r($error);
-    }else{
-      $udata[$k] = $this->upload->data(); 
-    }
-  }
+}
 }
 
 
@@ -74,7 +77,7 @@ public function logout(){
     if(empty($user_id)){
       $response_array = array(
        'status_code' => "0",
-       'status' => "fails",
+       'status' => HTTP_400,
        'message' => "User ID Missing.please check",
      );
       $this->output
@@ -91,7 +94,7 @@ public function logout(){
      {
       $response_array = array(
         'status_code' => "1",
-        'status' => true,
+        'status' => HTTP_200,
         'message' => "Logout Successfully"
       );
       $this->output
@@ -101,7 +104,7 @@ public function logout(){
     else{
       $response_array = array(
         'status_code' => "0",
-        'status' => false,
+        'status' => HTTP_400,
         'message' => "Something Wrong in Registartion",
       );
       $this->output
@@ -113,7 +116,7 @@ public function logout(){
 else{
   $response_array = array(
     'status_code' => "0",
-    'status' => false,
+    'status' => HTTP_400,
     'message' => "Please give all request params"
   );
   $this->output
@@ -127,6 +130,7 @@ public function userLogin(){
   $this->load->model('CredentialModel');
   $response_array = array();
   $signup_array   = array();
+
 
   $json_request_body = file_get_contents('php://input');
   $data = json_decode($json_request_body, true);
@@ -144,7 +148,7 @@ public function userLogin(){
     if(empty($mobile_number)){
       $response_array = array(
        'status_code' => "0",
-       'status' => "fails",
+       'status' => HTTP_400,
        'message' => "Enter Mobile Number",
      );
       $this->output
@@ -154,7 +158,7 @@ public function userLogin(){
     else if(empty($user_password)){
       $response_array = array(
         'status_code' => "0",
-        'status' => "fails",
+        'status' => HTTP_400,
         'message' => "Enter Password",
       );
       $this->output
@@ -181,7 +185,7 @@ public function userLogin(){
 
           $response_array = array(
             'status_code' => "1",
-            'status' => true,
+            'status' => HTTP_200,
             'message' => "Login Successfully",
             'user_details' => array('user_id' => $result_query[0]['user_id'],
               'user_name' => $result_query[0]['user_username'],
@@ -199,7 +203,7 @@ public function userLogin(){
         else{
           $response_array = array(
             'status_code' => "0",
-            'status' => false,
+            'status' => HTTP_400,
             'message' => "Something Wrong in Registartion",
           );
           $this->output
@@ -210,7 +214,7 @@ public function userLogin(){
       else{
         $response_array = array(
           'status_code' => "0",
-          'status' => false,
+          'status' => HTTP_400,
           'message' => "Account not exist. please signup first",
           'user_details' => array(
            'user_id' => "",
@@ -230,7 +234,7 @@ public function userLogin(){
   else{
     $response_array = array(
       'status_code' => "0",
-      'status' => false,
+      'status' => HTTP_400,
       'message' => "Please give all request params",
       'user_details' => array(
        'user_id' => "",
@@ -275,7 +279,7 @@ public function userSignup(){
       if(empty($user_name)){
         $response_array = array(
          'status_code' => "0",
-         'status' => "fails",
+         'status' => HTTP_400,
          'message' => "Enter Username",
        );
         $this->output
@@ -285,7 +289,7 @@ public function userSignup(){
       else if(empty($email_id)){
         $response_array = array(
          'status_code' => "0",
-         'status' => "fails",
+         'status' => HTTP_400,
          'message' => "Enter Emaild Id",
        );
         $this->output
@@ -295,7 +299,7 @@ public function userSignup(){
       else if(empty($mobile_number)){
         $response_array = array(
          'status_code' => "0",
-         'status' => "fails",
+         'status' => HTTP_400,
          'message' => "Enter Mobile Number",
        );
         $this->output
@@ -305,7 +309,7 @@ public function userSignup(){
       else if(empty($user_address)){
         $response_array = array(
          'status_code' => "0",
-         'status' => "fails",
+         'status' => HTTP_400,
          'message' => "Enter Address Number",
        );
         $this->output
@@ -316,7 +320,7 @@ public function userSignup(){
       else if(empty($user_password)){
         $response_array = array(
           'status_code' => "0",
-          'status' => "fails",
+          'status' => HTTP_400,
           'message' => "Enter Password",
         );
         $this->output
@@ -326,7 +330,7 @@ public function userSignup(){
       else if(empty($user_profile_img)){
         $response_array = array(
           'status_code' => "0",
-          'status' => "fails",
+          'status' => HTTP_400,
           'message' => "Choose profile image",
         );
         $this->output
@@ -367,7 +371,7 @@ public function userSignup(){
 
             $response_array = array(
              'status_code' => "1",
-             'status' => true,
+             'status' => HTTP_200,
              'message' => "New User Registered Successfully",
              'user_details' => array(
               'user_id' => $result_query,
@@ -385,7 +389,7 @@ public function userSignup(){
           else{
             $response_array = array(
              'status_code' => "0",
-             'status' => false,
+             'status' => HTTP_400,
              'message' => "Something Wrong in Registartion",
            );
             $this->output
@@ -396,7 +400,7 @@ public function userSignup(){
         else{
           $response_array = array(
             'status_code' => "0",
-            'status' => false,
+            'status' => HTTP_400,
             'message' => "User Already Exist",
             'user_details' => array(
              'user_id' => null,
@@ -415,7 +419,7 @@ public function userSignup(){
     else{
       $response_array = array(
         'status_code' => "0",
-        'status' => false,
+        'status' => HTTP_400,
         'message' => "Please give all request params"
       );
       $this->output
