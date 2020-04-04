@@ -40,7 +40,7 @@ class Authorization_Token
 
 
     public function __construct()
-	{
+    {
         $this->CI =& get_instance();
 
         /** 
@@ -105,7 +105,7 @@ class Authorization_Token
                     $token_decode = JWT::decode($token_data['token'], $this->token_key, array($this->token_algorithm));
                 }
                 catch(Exception $e) {
-                    return ['status' => HTTP_404, 'message' => $e->getMessage()];
+                    return ['status' => FALSE, 'message' => $e->getMessage()];
                 }
 
                 if(!empty($token_decode) AND is_object($token_decode))
