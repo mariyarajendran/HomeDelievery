@@ -484,7 +484,7 @@ class API_Controller extends CI_Controller
 
         } else {
 
-            $this->_response(['status' => HTTP_404, 'error' => 'Token Time Expire.'], self::HTTP_UNAUTHORIZED);
+            $this->_response(['status' => FALSE, 'error' => 'Token Time Expire.'], self::HTTP_UNAUTHORIZED);
         }
     }
 
