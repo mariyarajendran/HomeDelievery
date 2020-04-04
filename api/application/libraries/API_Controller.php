@@ -146,10 +146,10 @@ class API_Controller extends CI_Controller
             } else
             {
                 // not allow request method
-                $this->_response(['status' => HTTP_404, 'error' => 'Unknown method'], self::HTTP_METHOD_NOT_ALLOWED);
+                $this->_response(['status' => FALSE, 'error' => 'Unknown method'], self::HTTP_METHOD_NOT_ALLOWED);
             }
         } else {
-            $this->_response(['status' => HTTP_404, 'error' => 'Unknown method'], self::HTTP_METHOD_NOT_ALLOWED);
+            $this->_response(['status' => FALSE, 'error' => 'Unknown method'], self::HTTP_METHOD_NOT_ALLOWED);
         }
     }
 
@@ -163,7 +163,6 @@ class API_Controller extends CI_Controller
      * Total Number Limit without Time
      * 
      * @param: {minute} time/everyday
-
      * Total Number Limit with Last {3,4,5...} minute
      * --------------------------------------------------------
      */
@@ -171,16 +170,16 @@ class API_Controller extends CI_Controller
     {
         // check limit number
         if (!isset($data[0])) {
-            $this->_response(['status' => HTTP_404, 'error' => 'Limit Number Required'], self::HTTP_BAD_REQUEST);
+            $this->_response(['status' => FALSE, 'error' => 'Limit Number Required'], self::HTTP_BAD_REQUEST);
         }
 
         // check limit type
         if (!isset($data[1])) {
-            $this->_response(['status' => HTTP_404, 'error' => 'Limit Type Required'], self::HTTP_BAD_REQUEST);
+            $this->_response(['status' => FALSE, 'error' => 'Limit Type Required'], self::HTTP_BAD_REQUEST);
         }
         
         if (!isset($this->db)) {
-            $this->_response(['status' => HTTP_404, 'error' => 'Load CodeIgniter Database Library'], self::HTTP_BAD_REQUEST);
+            $this->_response(['status' => FALSE, 'error' => 'Load CodeIgniter Database Library'], self::HTTP_BAD_REQUEST);
         }
 
         // check limit database table exists
@@ -269,7 +268,7 @@ class API_Controller extends CI_Controller
                     }
 
                 } else {
-                    $this->_response(['status' => HTTP_404, 'error' => 'This IP Address has reached limit for this method'], self::HTTP_REQUEST_TIMEOUT);
+                    $this->_response(['status' => FALSE, 'error' => 'This IP Address has reached limit for this method'], self::HTTP_REQUEST_TIMEOUT);
                 }
 
             } else
@@ -278,7 +277,7 @@ class API_Controller extends CI_Controller
                 $this->limit_data_insert();
             }
         } else {
-            $this->_response(['status' => HTTP_404, 'error' => 'Limit Type Invalid'], self::HTTP_BAD_REQUEST);
+            $this->_response(['status' => FALSE, 'error' => 'Limit Type Invalid'], self::HTTP_BAD_REQUEST);
         }
     }
 
@@ -338,12 +337,12 @@ class API_Controller extends CI_Controller
                 } else
                 {
                     if (!isset($this->db)) {
-                        $this->_response(['status' => HTTP_404, 'error' => 'Load CodeIgniter Database Library'], self::HTTP_BAD_REQUEST);
+                        $this->_response(['status' => FALSE, 'error' => 'Load CodeIgniter Database Library'], self::HTTP_BAD_REQUEST);
                     }
 
                     // check api key database table exists
                     if (!$this->db->table_exists($this->API_KEYS_TABLE_NAME)) {
-                        $this->_response(['status' => HTTP_404, 'error' => 'Create API Key Database Table'], self::HTTP_BAD_REQUEST);
+                        $this->_response(['status' => FALSE, 'error' => 'Create API Key Database Table'], self::HTTP_BAD_REQUEST);
                     }
 
                     $where_key_data = [
@@ -354,13 +353,13 @@ class API_Controller extends CI_Controller
                     $limit_query = $this->CI->db->get_where($this->API_KEYS_TABLE_NAME, $where_key_data);
                     if (!$this->db->affected_rows() > 0)
                     {
-                        $this->_response(['status' => HTTP_404, 'error' => 'API Key Invalid'], self::HTTP_NOT_FOUND);
+                        $this->_response(['status' => FALSE, 'error' => 'API Key Invalid'], self::HTTP_NOT_FOUND);
                     } 
                 }
 
             } else
             {
-                $this->_response(['status' => HTTP_404, 'error' => 'Set API Key in Request Header'], self::HTTP_NOT_FOUND);
+                $this->_response(['status' => FALSE, 'error' => 'Set API Key in Request Header'], self::HTTP_NOT_FOUND);
             }
         } else if (strtolower($api_key_type) == 'get') // // api key type `get`
         {
@@ -383,18 +382,18 @@ class API_Controller extends CI_Controller
                 if ($api_key != "table")
                 {
                     if ($get_param_value != $api_key) {
-                        $this->_response(['status' => HTTP_404, 'error' => 'API Key Invalid'], self::HTTP_UNAUTHORIZED);
+                        $this->_response(['status' => FALSE, 'error' => 'API Key Invalid'], self::HTTP_UNAUTHORIZED);
                     }
 
                 } else
                 {
                     if (!isset($this->db)) {
-                        $this->_response(['status' => HTTP_404, 'error' => 'Load CodeIgniter Database Library'], self::HTTP_BAD_REQUEST);
+                        $this->_response(['status' => FALSE, 'error' => 'Load CodeIgniter Database Library'], self::HTTP_BAD_REQUEST);
                     }
 
                     // check api key database table exists
                     if (!$this->db->table_exists($this->API_KEYS_TABLE_NAME)) {
-                        $this->_response(['status' => HTTP_404, 'error' => 'Create API Key Database Table'], self::HTTP_BAD_REQUEST);
+                        $this->_response(['status' => FALSE, 'error' => 'Create API Key Database Table'], self::HTTP_BAD_REQUEST);
                     }
 
                     $where_key_data = [
@@ -405,12 +404,12 @@ class API_Controller extends CI_Controller
                     $limit_query = $this->CI->db->get_where($this->API_KEYS_TABLE_NAME, $where_key_data);
                     if (!$this->db->affected_rows() > 0)
                     {
-                        $this->_response(['status' => HTTP_404, 'error' => 'API Key Invalid'], self::HTTP_NOT_FOUND);
+                        $this->_response(['status' => FALSE, 'error' => 'API Key Invalid'], self::HTTP_NOT_FOUND);
                     } 
                 }
             } else
             {
-                $this->_response(['status' => HTTP_404, 'error' => 'API Key GET Parameter Required'], self::HTTP_NOT_FOUND);
+                $this->_response(['status' => FALSE, 'error' => 'API Key GET Parameter Required'], self::HTTP_NOT_FOUND);
             }
         } else if (strtolower($api_key_type) == 'post') // // api key type `post`
         {
@@ -455,16 +454,16 @@ class API_Controller extends CI_Controller
                     $limit_query = $this->CI->db->get_where($this->API_KEYS_TABLE_NAME, $where_key_data);
                     if (!$this->db->affected_rows() > 0)
                     {
-                        $this->_response(['status' => HTTP_404, 'error' => 'API Key Invalid'], self::HTTP_NOT_FOUND);
+                        $this->_response(['status' => FALSE, 'error' => 'API Key Invalid'], self::HTTP_NOT_FOUND);
                     } 
                 }
             } else
             {
-                $this->_response(['status' => HTTP_404, 'error' => 'API Key POST Parameter Required'], self::HTTP_NOT_FOUND);
+                $this->_response(['status' => FALSE, 'error' => 'API Key POST Parameter Required'], self::HTTP_NOT_FOUND);
             }
 
         } else {
-            $this->_response(['status' => HTTP_404, 'error' => 'API Key Parameter Required'], self::HTTP_NOT_FOUND);
+            $this->_response(['status' => FALSE, 'error' => 'API Key Parameter Required'], self::HTTP_NOT_FOUND);
         }
     }
 
@@ -485,7 +484,7 @@ class API_Controller extends CI_Controller
 
         } else {
 
-            $this->_response(['status' => HTTP_404, 'error' => $result['message']], self::HTTP_UNAUTHORIZED);
+            $this->_response(['status' => HTTP_404, 'error' => 'Token Time Expire.'], self::HTTP_UNAUTHORIZED);
         }
     }
 
