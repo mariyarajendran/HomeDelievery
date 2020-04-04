@@ -113,7 +113,7 @@ class Authorization_Token
                     // Check Token API Time [API_TIME]
                     if (empty($token_decode->API_TIME OR !is_numeric($token_decode->API_TIME))) {
                         
-                        return ['status' => HTTP_404, 'message' => 'Token Time Not Define!'];
+                        return ['status' => FALSE, 'message' => 'Token Time Not Define!'];
                     }
                     else
                     {
@@ -123,28 +123,28 @@ class Authorization_Token
                         $time_difference = strtotime('now') - $token_decode->API_TIME;
                         if( $time_difference >= $this->token_expire_time )
                         {
-                            return ['status' => HTTP_404, 'message' => 'Token Time Expire.'];
+                            return ['status' => FALSE, 'message' => 'Token Time Expire.'];
 
                         }else
                         {
                             /**
                              * All Validation False Return Data
                              */
-                            return ['status' => HTTP_200, 'data' => $token_decode];
+                            return ['status' => TRUE, 'data' => $token_decode];
                         }
                     }
                     
                 }else{
-                    return ['status' => HTTP_404, 'message' => 'Forbidden'];
+                    return ['status' => FALSE, 'message' => 'Forbidden'];
                 }
             }
             catch(Exception $e) {
-                return ['status' => HTTP_404, 'message' => $e->getMessage()];
+                return ['status' => FALSE, 'message' => $e->getMessage()];
             }
         }else
         {
             // Authorization Header Not Found!
-            return ['status' => HTTP_404, 'message' => $token_data['message'] ];
+            return ['status' => FALSE, 'message' => $token_data['message'] ];
         }
     }
 
