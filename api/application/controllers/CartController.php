@@ -16,7 +16,7 @@ class CartController extends API_Controller{
 			'methods'                              => ['POST','GET'],
 			'requireAuthorization'                 => true,
 			'limit' => [100, 'ip', 'everyday'] ,
-			'data' => [ 'status_code' => '0' ],
+			'data' => [ 'status_code' => HTTP_401 ],
 		]);
 	}
 
@@ -46,6 +46,7 @@ class CartController extends API_Controller{
 				);
 				$this->output
 				->set_content_type('application/json')
+				->set_status_header(HTTP_400)
 				->set_output(json_encode($response_array));
 			}
 			else if(empty($product_id)){
@@ -56,6 +57,7 @@ class CartController extends API_Controller{
 				);
 				$this->output
 				->set_content_type('application/json')
+				->set_status_header(HTTP_400)
 				->set_output(json_encode($response_array));
 			}else{
 				$cart_array = array(
@@ -73,6 +75,7 @@ class CartController extends API_Controller{
 					);
 					$this->output
 					->set_content_type('application/json')
+					->set_status_header(HTTP_200)
 					->set_output(json_encode($response_array));
 				}
 				else{
@@ -83,6 +86,7 @@ class CartController extends API_Controller{
 					);
 					$this->output
 					->set_content_type('application/json')
+					->set_status_header(HTTP_400)
 					->set_output(json_encode($response_array));
 				}
 			}
@@ -104,6 +108,7 @@ class CartController extends API_Controller{
 			);
 			$this->output
 			->set_content_type('application/json')
+			->set_status_header(HTTP_400)
 			->set_output(json_encode($response_array));
 		}
 	}
@@ -127,6 +132,7 @@ class CartController extends API_Controller{
 				);
 				$this->output
 				->set_content_type('application/json')
+				->set_status_header(HTTP_400)
 				->set_output(json_encode($response_array));
 			}
 			else{
@@ -140,6 +146,7 @@ class CartController extends API_Controller{
 					);
 					$this->output
 					->set_content_type('application/json')
+					->set_status_header(HTTP_200)
 					->set_output(json_encode($response_array));
 				}
 				else{
@@ -150,6 +157,7 @@ class CartController extends API_Controller{
 					);
 					$this->output
 					->set_content_type('application/json')
+					->set_status_header(HTTP_400)
 					->set_output(json_encode($response_array));
 				}
 			}
@@ -171,6 +179,7 @@ class CartController extends API_Controller{
 			);
 			$this->output
 			->set_content_type('application/json')
+			->set_status_header(HTTP_400)
 			->set_output(json_encode($response_array));
 		}
 	}
@@ -196,6 +205,7 @@ class CartController extends API_Controller{
 				);
 				$this->output
 				->set_content_type('application/json')
+				->set_status_header(HTTP_400)
 				->set_output(json_encode($response_array));
 			}else{
 				$page_count = ($page_count * 10);
@@ -235,6 +245,7 @@ class CartController extends API_Controller{
 				);
 				$this->output
 				->set_content_type('application/json')
+				->set_status_header(HTTP_200)
 				->set_output(json_encode($response_array));
 			}
 			else{
@@ -246,6 +257,7 @@ class CartController extends API_Controller{
 				);
 				$this->output
 				->set_content_type('application/json')
+				->set_status_header(HTTP_400)
 				->set_output(json_encode($response_array));
 			}
 
@@ -266,6 +278,7 @@ class CartController extends API_Controller{
 			);
 			$this->output
 			->set_content_type('application/json')
+			->set_status_header(HTTP_400)
 			->set_output(json_encode($response_array));
 		}
 

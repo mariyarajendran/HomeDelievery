@@ -86,4 +86,5 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 define('HTTP_200', 200);
 define('HTTP_400', 400);
 define('HTTP_404', 404);
+define('HTTP_401', 401);
 

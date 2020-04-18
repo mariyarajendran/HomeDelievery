@@ -82,6 +82,7 @@ public function logout(){
      );
       $this->output
       ->set_content_type('application/json')
+      ->set_status_header(HTTP_400)
       ->set_output(json_encode($response_array));
     }
     else{
@@ -99,6 +100,7 @@ public function logout(){
       );
       $this->output
       ->set_content_type('application/json')
+      ->set_status_header(HTTP_200)
       ->set_output(json_encode($response_array));
     }
     else{
@@ -109,6 +111,7 @@ public function logout(){
       );
       $this->output
       ->set_content_type('application/json')
+      ->set_status_header(HTTP_400)
       ->set_output(json_encode($response_array));
     }
   }
@@ -121,6 +124,7 @@ else{
   );
   $this->output
   ->set_content_type('application/json')
+  ->set_status_header(HTTP_400)
   ->set_output(json_encode($response_array));
 }
 }
@@ -153,6 +157,7 @@ public function userLogin(){
      );
       $this->output
       ->set_content_type('application/json')
+      ->set_status_header(HTTP_400)
       ->set_output(json_encode($response_array));
     }
     else if(empty($user_password)){
@@ -163,6 +168,7 @@ public function userLogin(){
       );
       $this->output
       ->set_content_type('application/json')
+      ->set_status_header(HTTP_400)
       ->set_output(json_encode($response_array));
     }
     else{
@@ -208,6 +214,7 @@ public function userLogin(){
           );
           $this->output
           ->set_content_type('application/json')
+          ->set_status_header(HTTP_400)
           ->set_output(json_encode($response_array));
         }
       }
@@ -226,6 +233,7 @@ public function userLogin(){
         );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_400)
         ->set_output(json_encode($response_array));
       }
 
@@ -246,6 +254,7 @@ public function userLogin(){
     );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_400)
     ->set_output(json_encode($response_array));
   }
 
@@ -284,6 +293,7 @@ public function userSignup(){
        );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_400)
         ->set_output(json_encode($response_array));
       }
       else if(empty($email_id)){
@@ -294,6 +304,7 @@ public function userSignup(){
        );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_400)
         ->set_output(json_encode($response_array));
       }
       else if(empty($mobile_number)){
@@ -304,6 +315,7 @@ public function userSignup(){
        );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_400)
         ->set_output(json_encode($response_array));
       }  
       else if(empty($user_address)){
@@ -314,6 +326,7 @@ public function userSignup(){
        );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_400)
         ->set_output(json_encode($response_array));
       }
 
@@ -325,6 +338,7 @@ public function userSignup(){
         );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_400)
         ->set_output(json_encode($response_array));
       }
       else if(empty($user_profile_img)){
@@ -335,6 +349,7 @@ public function userSignup(){
         );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_400)
         ->set_output(json_encode($response_array));
       }
       else{
@@ -384,6 +399,7 @@ public function userSignup(){
            );
             $this->output
             ->set_content_type('application/json')
+            ->set_status_header(HTTP_200)
             ->set_output(json_encode($response_array));
           }
           else{
@@ -394,6 +410,7 @@ public function userSignup(){
            );
             $this->output
             ->set_content_type('application/json')
+            ->set_status_header(HTTP_400)
             ->set_output(json_encode($response_array));
           }
         }
@@ -412,6 +429,7 @@ public function userSignup(){
           );
           $this->output
           ->set_content_type('application/json')
+          ->set_status_header(HTTP_400)
           ->set_output(json_encode($response_array));
         }
       }
@@ -424,6 +442,7 @@ public function userSignup(){
       );
       $this->output
       ->set_content_type('application/json')
+      ->set_status_header(HTTP_400)
       ->set_output(json_encode($response_array));
     }
 

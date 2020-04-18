@@ -15,7 +15,7 @@ class ProfileController extends API_Controller{
       'methods'                              => ['POST','GET'],
       'requireAuthorization'                 => true,
       'limit' => [100, 'ip', 'everyday'] ,
-      'data' => [ 'status_code' => '0' ],
+      'data' => [ 'status_code' => HTTP_401 ],
     ]);
   }
 
@@ -47,6 +47,7 @@ class ProfileController extends API_Controller{
        );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_400)
         ->set_output(json_encode($response_array));
       }else{
         $user_array = array('user_id' => $user_id);
@@ -66,6 +67,7 @@ class ProfileController extends API_Controller{
           );
           $this->output
           ->set_content_type('application/json')
+          ->set_status_header(HTTP_200)
           ->set_output(json_encode($response_array));
 
         //$this->api_return(data, status_code);
@@ -78,6 +80,7 @@ class ProfileController extends API_Controller{
           );
           $this->output
           ->set_content_type('application/json')
+          ->set_status_header(HTTP_400)
           ->set_output(json_encode($response_array));
         }
 
@@ -91,6 +94,7 @@ class ProfileController extends API_Controller{
       );
       $this->output
       ->set_content_type('application/json')
+      ->set_status_header(HTTP_400)
       ->set_output(json_encode($response_array));
     }
 
@@ -124,6 +128,7 @@ class ProfileController extends API_Controller{
    );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_400)
     ->set_output(json_encode($response_array));
   }else{
     $user_array = array('user_id' => $user_id);
@@ -168,6 +173,7 @@ class ProfileController extends API_Controller{
       );
       $this->output
       ->set_content_type('application/json')
+      ->set_status_header(HTTP_200)
       ->set_output(json_encode($response_array));
     }
     else{
@@ -178,6 +184,7 @@ class ProfileController extends API_Controller{
       );
       $this->output
       ->set_content_type('application/json')
+      ->set_status_header(HTTP_400)
       ->set_output(json_encode($response_array));
     }
   }
@@ -190,6 +197,7 @@ else{
   );
   $this->output
   ->set_content_type('application/json')
+  ->set_status_header(HTTP_400)
   ->set_output(json_encode($response_array));
 }
 

@@ -15,7 +15,7 @@ class PushNotificationController extends API_Controller{
       'methods'                              => ['POST','GET'],
       'requireAuthorization'                 => true,
       'limit' => [100, 'ip', 'everyday'] ,
-      'data' => [ 'status_code' => '0' ],
+      'data' => [ 'status_code' => HTTP_401 ],
     ]);
   }
 
@@ -43,6 +43,7 @@ class PushNotificationController extends API_Controller{
       );
        $this->output
        ->set_content_type('application/json')
+       ->set_status_header(HTTP_400)
        ->set_output(json_encode($response_array));
      }else if(empty($title)){
        $response_array = array(
@@ -52,6 +53,7 @@ class PushNotificationController extends API_Controller{
       );
        $this->output
        ->set_content_type('application/json')
+       ->set_status_header(HTTP_400)
        ->set_output(json_encode($response_array));
      }else if(empty($body)){
        $response_array = array(
@@ -61,6 +63,7 @@ class PushNotificationController extends API_Controller{
       );
        $this->output
        ->set_content_type('application/json')
+       ->set_status_header(HTTP_400)
        ->set_output(json_encode($response_array));
      }else{
       $status_array = array('user_status' => $user_status);
@@ -83,6 +86,7 @@ class PushNotificationController extends API_Controller{
         );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_200)
         ->set_output(json_encode($response_array));
       }
       else{
@@ -93,6 +97,7 @@ class PushNotificationController extends API_Controller{
         );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_400)
         ->set_output(json_encode($response_array));
       }
     }
@@ -107,6 +112,7 @@ class PushNotificationController extends API_Controller{
     );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_400)
     ->set_output(json_encode($response_array));
   }
 }

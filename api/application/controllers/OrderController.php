@@ -16,7 +16,7 @@ class OrderController extends API_Controller{
 			'methods'                              => ['POST','GET'],
 			'requireAuthorization'                 => true,
 			'limit' => [100, 'ip', 'everyday'] ,
-			'data' => [ 'status_code' => '0' ],
+			'data' => [ 'status_code' => HTTP_401 ],
 		]);
 	}
 
@@ -42,31 +42,34 @@ class OrderController extends API_Controller{
 			if(empty($user_id)){
 				$response_array = array(
 					'status_code' => "0",
-					'status' => "fails",
+					'status' => HTTP_400,
 					'message' => "User id missing",
 				);
 				$this->output
 				->set_content_type('application/json')
+				->set_status_header(HTTP_400)
 				->set_output(json_encode($response_array));
 			}
 			else if(empty($product_id)){
 				$response_array = array(
 					'status_code' => "0",
-					'status' => "fails",
+					'status' => HTTP_400,
 					'message' => "Product id missing",
 				);
 				$this->output
 				->set_content_type('application/json')
+				->set_status_header(HTTP_400)
 				->set_output(json_encode($response_array));
 			}
 			else if(empty($cart_id)){
 				$response_array = array(
 					'status_code' => "0",
-					'status' => "fails",
+					'status' => HTTP_400,
 					'message' => "Product id missing",
 				);
 				$this->output
 				->set_content_type('application/json')
+				->set_status_header(HTTP_400)
 				->set_output(json_encode($response_array));
 			}else{
 				$order_array = array(
@@ -86,6 +89,7 @@ class OrderController extends API_Controller{
 					);
 					$this->output
 					->set_content_type('application/json')
+					->set_status_header(HTTP_200)
 					->set_output(json_encode($response_array));
 				}
 				else{
@@ -96,6 +100,7 @@ class OrderController extends API_Controller{
 					);
 					$this->output
 					->set_content_type('application/json')
+					->set_status_header(HTTP_400)
 					->set_output(json_encode($response_array));
 				}
 			}
@@ -117,6 +122,7 @@ class OrderController extends API_Controller{
 			);
 			$this->output
 			->set_content_type('application/json')
+			->set_status_header(HTTP_400)
 			->set_output(json_encode($response_array));
 		}
 	}
@@ -154,6 +160,7 @@ class OrderController extends API_Controller{
 					);
 					$this->output
 					->set_content_type('application/json')
+					->set_status_header(HTTP_200)
 					->set_output(json_encode($response_array));
 				}
 				else{
@@ -164,6 +171,7 @@ class OrderController extends API_Controller{
 					);
 					$this->output
 					->set_content_type('application/json')
+					->set_status_header(HTTP_400)
 					->set_output(json_encode($response_array));
 				}
 
@@ -184,6 +192,7 @@ class OrderController extends API_Controller{
 			);
 			$this->output
 			->set_content_type('application/json')
+			->set_status_header(HTTP_400)
 			->set_output(json_encode($response_array));
 		}
 
@@ -210,6 +219,7 @@ class OrderController extends API_Controller{
 				);
 				$this->output
 				->set_content_type('application/json')
+				->set_status_header(HTTP_400)
 				->set_output(json_encode($response_array));
 			}else{
 				$page_count = ($page_count * 10);
@@ -248,6 +258,7 @@ class OrderController extends API_Controller{
 					);
 					$this->output
 					->set_content_type('application/json')
+					->set_status_header(HTTP_200)
 					->set_output(json_encode($response_array));
 				}
 				else{
@@ -259,6 +270,7 @@ class OrderController extends API_Controller{
 					);
 					$this->output
 					->set_content_type('application/json')
+					->set_status_header(HTTP_400)
 					->set_output(json_encode($response_array));
 				}
 
@@ -280,6 +292,7 @@ class OrderController extends API_Controller{
 			);
 			$this->output
 			->set_content_type('application/json')
+			->set_status_header(HTTP_400)
 			->set_output(json_encode($response_array));
 		}
 
