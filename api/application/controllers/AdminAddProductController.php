@@ -17,7 +17,7 @@ class AdminAddProductController extends API_Controller{
       'methods'                              => ['POST','GET'],
       'requireAuthorization'                 => true,
       'limit' => [100, 'ip', 'everyday'] ,
-      'data' => [ 'status_code' => '0' ],
+      'data' => [ 'status' => HTTP_401 ],
     ]);
   }
 
@@ -61,6 +61,7 @@ class AdminAddProductController extends API_Controller{
    );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_400)
     ->set_output(json_encode($response_array));
   }
   else if(empty($product_cost)){
@@ -71,6 +72,7 @@ class AdminAddProductController extends API_Controller{
    );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_400)
     ->set_output(json_encode($response_array));
   }
   else if(empty($product_image)){
@@ -81,6 +83,7 @@ class AdminAddProductController extends API_Controller{
    );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_400)
     ->set_output(json_encode($response_array));
   }
 
@@ -92,6 +95,7 @@ class AdminAddProductController extends API_Controller{
     );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_400)
     ->set_output(json_encode($response_array));
   }
   else if(empty($product_long_descr)){
@@ -102,6 +106,7 @@ class AdminAddProductController extends API_Controller{
     );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_400)
     ->set_output(json_encode($response_array));
   }
   else if(empty($product_offers)){
@@ -112,6 +117,7 @@ class AdminAddProductController extends API_Controller{
     );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_400)
     ->set_output(json_encode($response_array));
   }
   else{
@@ -150,6 +156,7 @@ class AdminAddProductController extends API_Controller{
    );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_200)
     ->set_output(json_encode($response_array));
   }
   else{
@@ -160,6 +167,7 @@ class AdminAddProductController extends API_Controller{
    );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_400)
     ->set_output(json_encode($response_array));
   }
 
@@ -173,6 +181,7 @@ else{
   );
   $this->output
   ->set_content_type('application/json')
+  ->set_status_header(HTTP_400)
   ->set_output(json_encode($response_array));
 }
 }
@@ -204,6 +213,7 @@ public function updateProductDetails(){
  );
   $this->output
   ->set_content_type('application/json')
+  ->set_status_header(HTTP_400)
   ->set_output(json_encode($response_array));
 }else{
   $product_array = array('product_id' => $product_id);
@@ -253,6 +263,7 @@ public function updateProductDetails(){
     );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_200)
     ->set_output(json_encode($response_array));
   }
   else{
@@ -263,6 +274,7 @@ public function updateProductDetails(){
     );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_400)
     ->set_output(json_encode($response_array));
   }
 }
@@ -274,6 +286,7 @@ public function updateProductDetails(){
   );
   $this->output
   ->set_content_type('application/json')
+  ->set_status_header(HTTP_400)
   ->set_output(json_encode($response_array));
 }
 
@@ -298,6 +311,7 @@ public function adminDeleteProduct(){
       );
       $this->output
       ->set_content_type('application/json')
+      ->set_status_header(HTTP_400)
       ->set_output(json_encode($response_array));
     }
     else{
@@ -311,6 +325,7 @@ public function adminDeleteProduct(){
         );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_200)
         ->set_output(json_encode($response_array));
       }
       else{
@@ -321,6 +336,7 @@ public function adminDeleteProduct(){
         );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_400)
         ->set_output(json_encode($response_array));
       }
     }
@@ -335,6 +351,7 @@ public function adminDeleteProduct(){
     );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_400)
     ->set_output(json_encode($response_array));
   }
 }
@@ -356,6 +373,7 @@ public function confirmAndCloseOrder(){
       );
       $this->output
       ->set_content_type('application/json')
+      ->set_status_header(HTTP_400)
       ->set_output(json_encode($response_array));
     }
     else if(empty($order_status)){
@@ -366,6 +384,7 @@ public function confirmAndCloseOrder(){
       );
       $this->output
       ->set_content_type('application/json')
+      ->set_status_header(HTTP_400)
       ->set_output(json_encode($response_array));
     }else{
       $order_data = array(
@@ -381,6 +400,7 @@ public function confirmAndCloseOrder(){
         );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_200)
         ->set_output(json_encode($response_array));
       }
       else{
@@ -391,6 +411,7 @@ public function confirmAndCloseOrder(){
         );
         $this->output
         ->set_content_type('application/json')
+        ->set_status_header(HTTP_400)
         ->set_output(json_encode($response_array));
       }
 
@@ -404,6 +425,7 @@ public function confirmAndCloseOrder(){
     );
     $this->output
     ->set_content_type('application/json')
+    ->set_status_header(HTTP_400)
     ->set_output(json_encode($response_array));
   }
 
